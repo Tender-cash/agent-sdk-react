@@ -19,9 +19,9 @@
         "ts-types": " tsc --emitDeclarationOnly",
         "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
         "publish:new": "yarn publish --non-interactive",
-        "build:major": "yarn version --major && git push origin development && yarn publish:new",
-        "build:minor": "yarn version --minor && git push origin development && yarn publish:new",
-        "build:patch": "yarn version --patch && git push origin development && yarn publish:new"
+        "build:major": "yarn version --major && git push origin main && yarn publish:new",
+        "build:minor": "yarn version --minor && git push origin main && yarn publish:new",
+        "build:patch": "yarn version --patch && git push origin main && yarn publish:new"
     },
     "homepage": "https://merchant.tender.cash",
     "devDependencies": {
