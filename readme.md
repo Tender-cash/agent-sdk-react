@@ -1,5 +1,8 @@
 # @tender-cash/agent-sdk-react
 
+[![npm version](https://badge.fury.io/js/%40tender-cash%2Fagent-sdk-react.svg)](https://badge.fury.io/js/%40tender-cash%2Fagent-sdk-react)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 React component library for integrating the Tender Cash payment flow into your application.
 
 ## Installation
