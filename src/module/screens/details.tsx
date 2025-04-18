@@ -112,7 +112,7 @@ const RenderFinishedDetails = ({
               size={140}
             />
           </div>
-          <div className='ta-flex ta-flex-col ta-text-pretty ta-w-2/4 ta-my-auto'>
+          <div className='ta-flex ta-flex-col ta-text-pretty ta-w-2/4 ta-my-auto ta-justify-start'>
             <h3 className="ta-text-base ta-text-secondary">{coin.toUpperCase()} Deposit Address</h3>
             <p className="ta-text-[13px] ta-underline ta-underline-offset-4 ta-break-all">{address}</p>
           </div>
