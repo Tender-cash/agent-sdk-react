@@ -89,6 +89,7 @@ const RenderFinishedDetails = ({
   coin,
   status = "pending",
   balance,
+  excess,
 }:paymentResponseProps) => {
   const [_, copy] = useCopyToClipboard();
   const paymentType = paymentStatusMap[status];
@@ -96,7 +97,7 @@ const RenderFinishedDetails = ({
   const completed = status == PAYMENT_STATUS.COMPLETE;
   const isPartial = status == PAYMENT_STATUS.PARTIAL;
   const responseText = PAYMENT_RESPONSES[paymentType];
-  
+  console.log("excess", excess, balance);
   return(
     <>
       <FormHeader 
@@ -144,7 +145,7 @@ const RenderFinishedDetails = ({
           <div className="ta-flex ta-flex-col ta-p-4 ta-justify-center ta-items-center ta-w-1/2">
             <p className="ta-text-[12px] ta-text-secondary">{paymentType == "over" ? "EXCESS" : "REMAINING"}</p>
             <div className="ta-flex ta-flex-row ta-gap-2">
-              <span className="ta-text-[38px] leading-[48px] ta-font-bold">{balance}</span>
+              <span className="ta-text-[38px] leading-[48px] ta-font-bold">{paymentType == "over" ? excess : balance}</span>
               <span className="ta-text-xl ta-mt-auto ta-mb-4 ta-text-secondary ta-font-bold">{coin.toUpperCase()}</span>
             </div>
           </div>
@@ -177,6 +178,7 @@ const PaymentDetails = ({
   loading,
   status,
   balance,
+  excess,
   cancelPayment,
   confirmPayment,
 }:paymentResponseProps & paymentDetailsProps) => {
@@ -202,6 +204,7 @@ return <RenderFinishedDetails
   loading={loading}
   status={status}
   balance={balance}
+  excess={excess}
 />
 }
 

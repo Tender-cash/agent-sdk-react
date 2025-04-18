@@ -57,6 +57,7 @@ const TenderWidget = () => {
           confirmPayment={paymentData.confirmPayment}
           balance={paymentData.balance}
           status={paymentData.status}
+          excess={paymentData.excess}
         />}
         {currentStage === PAYMENT_STAGE.INFO &&
           <InfoScreen 

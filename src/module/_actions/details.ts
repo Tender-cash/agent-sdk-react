@@ -61,13 +61,15 @@ const fetchPaymentDetailAction = ({ nextScreen, setPageLoading }: { nextScreen:(
     const payResponse = response as APIResponse<newPaymentResponse>;
     if (payResponse?.data?.data){
       const paymentResponse: IPaymentData = {
+        ...paymentDetails,
         status: payResponse.data.data.status as PaymentStatusProps,
         amountPaid: payResponse.data.data.amountReceived,
         balance: payResponse.data.data.balanceRequired,
-        coin: payResponse.data.data.chainId?.coin 
-      }
+        excess: (parseFloat(payResponse.data.data.amountReceived || "0") - parseFloat(payResponse.data.data?.amount || "0")).toFixed(4),
+        coin: payResponse.data.data.currency?.name,
+      };
       setPaymentDetails((prev)=>({...prev, ...paymentResponse} as IPaymentData));
-      onEventResponse && onEventResponse({ status: payResponse.data.data.status as PaymentStatusProps, message: payResponse.data.message, data: paymentDetails });
+      onEventResponse && onEventResponse({ status: payResponse.data.data.status as PaymentStatusProps, message: payResponse.data.message, data: paymentResponse });
       if ([PAYMENT_STATUS.OVER, PAYMENT_STATUS.COMPLETE].includes(payResponse.data.data.status as any) && interval){
         confirmPaymentQueue.clearQueue();
         clearInterval(interval);
@@ -88,9 +90,9 @@ const fetchPaymentDetailAction = ({ nextScreen, setPageLoading }: { nextScreen:(
       RecordConfirmedTx(response);
     } catch (error) {
         Logger.error("no payment yet..", { error });
+        // onEventResponse && onEventResponse({ status: "error" as PaymentStatusProps, message: "no payment made yet", data: paymentDetails });
     } finally {
         setIsFetching(false);
-        onEventResponse && onEventResponse({ status: "error" as PaymentStatusProps, message: "no payment made yet", data: paymentDetails });
     }
   }
 

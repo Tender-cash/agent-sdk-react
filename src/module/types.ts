@@ -77,6 +77,7 @@ interface IPaymentData {
   address?: string;
   amountPaid?: string;
   balance?: string;
+  excess?: string;
   status?: PaymentStatusProps;
 }
 
@@ -88,6 +89,7 @@ interface paymentResponseProps {
   loading: boolean;
   status?: PaymentStatusProps;
   balance?: string;
+  excess?: string;
 }
 
 enum PAYMENT_RESPONSES {
@@ -157,7 +159,9 @@ interface newPaymentResponse {
   },
   coinAmount: string;
   contractAddress: string,
-  currency:string;
+  currency:{
+    name: string;
+  };
   fee: number;
   feeSent: boolean;
   feeUSD: number;
