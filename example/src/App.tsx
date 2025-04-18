@@ -78,7 +78,7 @@ function App() {
             </div>
           </div>
 
-          <button onClick={handleOpenSdk} style={{ marginBottom: '20px' }}>
+          <button onClick={handleOpenSdk} style={{ marginBottom: '20px', padding: '10px', border: '1px solid #ccc' }}>
             Open Tender SDK
           </button>
         </div>

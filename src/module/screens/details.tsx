@@ -97,7 +97,6 @@ const RenderFinishedDetails = ({
   const completed = status == PAYMENT_STATUS.COMPLETE;
   const isPartial = status == PAYMENT_STATUS.PARTIAL;
   const responseText = PAYMENT_RESPONSES[paymentType];
-  console.log("excess", excess, balance);
   return(
     <>
       <FormHeader 
