@@ -90,7 +90,6 @@ const fetchPaymentDetailAction = ({ nextScreen, setPageLoading }: { nextScreen:(
       RecordConfirmedTx(response);
     } catch (error) {
         Logger.error("no payment yet..", { error });
-        // onEventResponse && onEventResponse({ status: "error" as PaymentStatusProps, message: "no payment made yet", data: paymentDetails });
     } finally {
         setIsFetching(false);
     }
