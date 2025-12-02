@@ -14,7 +14,7 @@ import { APIResponse } from "../types";
 import { PaymentChainResponse, PaymentCoin, IPaymentData, Option, PAYMENT_STAGE } from "../types";
 
 const useAgentSdkAction = () => {
-  const { amount, fiatCurrency, client } = useConfig();
+  const { amount, fiatCurrency, client, referenceId } = useConfig();
   const [stage, setStage] = useState<number>(PAYMENT_STAGE.FORM);
   const [networks, setNetworks] = useState<Option[]|[]>([]);
   const [coins, setCoins] = useState<Option[]|[]>([]);
@@ -62,6 +62,7 @@ const useAgentSdkAction = () => {
       fiatCurrency, 
       chain: selectedNetwork?.value, 
       coin: selectedCoin?.value,
+      referenceId,
     });
   }
 

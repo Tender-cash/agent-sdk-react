@@ -40,7 +40,6 @@ const ConfigProvider: React.FC<ConfigProviderProps> = ({
     children,
 }) => {
   const [isLoading, setLoading] = useState<boolean>(false);
-  
 
   useEffect(() => {
     setAxiosInstance(config); // Set the Axios instance globally

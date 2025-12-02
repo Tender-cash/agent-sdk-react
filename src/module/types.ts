@@ -183,6 +183,7 @@ interface onFinishResponse {
   data: IPaymentData | undefined;
 }
 interface ConfigContextType {
+  referenceId: string; // required referenceId
   accessId: string; // required accessId
   accessSecret: string; // required accessSecret
   amount: number; // required amount in fiat to Charge
@@ -194,6 +195,7 @@ interface ConfigContextType {
 }
 
 interface TenderAgentProps {
+  referenceId: string;
   amount: number;
   fiatCurrency: string;
   accessId: string;

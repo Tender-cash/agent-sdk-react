@@ -11,7 +11,8 @@ const App = () => {
   return (
     <>
       <TenderAgentSdk 
-        amount={100}
+        amount={10}
+        referenceId={"123456790-090-safsasf-12fg"}
         fiatCurrency={"ngn"}
         accessId="RlQwBRgwFBAZ7mN8SiDVqkcs8OTlMjRvTKEX2T1AJAsFPuF97Hlu"
         accessSecret="fXARyx8qPkT49QXB9WyeUZJ1LjA9M9G6r9x0gWS5vUgHP8EMODN4"

@@ -5,10 +5,11 @@ import { ConfigProvider } from "./_context";
 import TenderWidget from "./screens";
 import { TenderAgentProps } from "./types";
 
-const TenderAgentSdk = ({ amount, accessId, accessSecret, env, fiatCurrency, onEventResponse }:TenderAgentProps) => {
+const TenderAgentSdk = ({ referenceId, amount, accessId, accessSecret, env, fiatCurrency, onEventResponse }:TenderAgentProps) => {
   return (
       <ConfigProvider
         config={{
+          referenceId,
           accessId,
           accessSecret,
           amount,

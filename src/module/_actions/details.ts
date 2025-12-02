@@ -25,16 +25,18 @@ const fetchPaymentDetailAction = ({ nextScreen, setPageLoading }: { nextScreen:(
   const [paymentError, setPaymentError] = useState<{title:string, message: string, data: any} | undefined>(undefined);
 
   const initiatePayment = async ({
-    amount, chain, coin, fiatCurrency
+    amount, chain, coin, fiatCurrency, referenceId
   }:{
-    amount: number, chain: string, coin: string, fiatCurrency:string,
+    amount: number, chain: string, coin: string, fiatCurrency:string, 
+    referenceId: string,
   }) => {
     setIsFetching(true);
     setPageLoading(true);
     const response = await client?.post(`${URL_PATHS.PAYMENT_INITIATE}/${fiatCurrency.toLowerCase()}`, {
       amount: String(amount),
       chain,
-      currency: coin.toLowerCase()
+      currency: coin.toLowerCase(),
+      referenceId: referenceId
     }) as APIResponse<newPaymentResponse>;
     if (response?.data?.data){
       const res = response.data.data;
