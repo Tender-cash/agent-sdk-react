@@ -1,6 +1,6 @@
 import { type Config } from "tailwindcss";
 
-import { fontFamily } from "tailwindcss/defaultTheme";
+import {fontFamily} from "tailwindcss/defaultTheme";
 import tailwindcssRadix from "tailwindcss-radix";
 import tailwindcssAnimate from "tailwindcss-animate";
 
@@ -12,6 +12,7 @@ const RenderPrefixVariable = (value:string) => `var(--${PrefixExt}${value})`;
 const config: Config = {
     prefix: Prefix,
     content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
+    important: ".tender-cash-agent-sdk",
     theme: {
         screens: {
             sm: { min: "640px" },

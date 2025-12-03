@@ -17,15 +17,15 @@ export const toast = {
             (t) => {
                 return (
                     <div
-                        className={`${t.visible ? "ta-animate-enter" : "ta-animate-leave"} ta-pointer-events-auto ta-flex ta-w-full ta-max-w-md ta-rounded-lg ta-bg-red-100 ta-ring-1 ta-ring-red-800 ta-ring-opacity-50`}
+                        className={`${t.visible ? "ta:animate-enter" : "ta:animate-leave"} ta:pointer-events-auto ta:flex ta:w-full ta:max-w-md ta:rounded-lg ta:bg-red-100 ta:ring-1 ta:ring-red-800 ta:ring-opacity-50`}
                     >
-                        <div className="ta-w-0 ta-flex-1 ta-p-4">
-                            <div className="ta-flex ta-items-center">
-                                <div className="ta-flex-shrink-0">
-                                    <CircleAlert className="ta-h-6 ta-w-6 ta-text-red-600" />
+                        <div className="ta:w-0 ta:flex-1 ta:p-4">
+                            <div className="ta:flex ta:items-center">
+                                <div className="ta:flex-shrink-0">
+                                    <CircleAlert className="ta:h-6 ta:w-6 ta:text-red-600" />
                                 </div>
-                                <div className="ta-ml-3 ta-flex-1 ta-md:flex ta-md:justify-between">
-                                    <p className="ta-text-sm ta-leading-5 ta-text-red-700">
+                                <div className="ta:ml-3 ta:flex-1 ta:md:flex ta:md:justify-between">
+                                    <p className="ta:text-sm ta:leading-5 ta:text-red-700">
                                         {message}
                                     </p>
                                 </div>
@@ -42,15 +42,15 @@ export const toast = {
         toastPrimitive.custom(
             (t) => (
                 <div
-                    className={`${t.visible ? "ta-animate-enter" : "ta-animate-leave"} ta-pointer-events-auto ta-flex ta-w-full ta-max-w-md ta-rounded-lg ta-bg-green-100 ta-ring-1 ta-ring-green-800 ta-ring-opacity-50`}
+                    className={`${t.visible ? "ta:animate-enter" : "ta:animate-leave"} ta:pointer-events-auto ta:flex ta:w-full ta:max-w-md ta:rounded-lg ta:bg-green-100 ta:ring-1 ta:ring-green-800 ta:ring-opacity-50`}
                 >
-                    <div className="ta-w-0 ta-flex-1 ta-p-4">
-                        <div className="ta-flex ta-items-center">
-                            <div className="ta-flex-shrink-0">
-                                <CheckCircle className="ta-h-6 ta-w-6 ta-text-green-600" />
+                    <div className="ta:w-0 ta:flex-1 ta:p-4">
+                        <div className="ta:flex ta:items-center">
+                            <div className="ta:flex-shrink-0">
+                                <CheckCircle className="ta:h-6 ta:w-6 ta:text-green-600" />
                             </div>
-                            <div className="ta-ml-3 ta-flex-1 ta-md:flex ta-md:justify-between">
-                                <p className="ta-text-sm ta-leading-5 ta-text-green-700">
+                            <div className="ta:ml-3 ta:flex-1 ta:md:flex ta:md:justify-between">
+                                <p className="ta:text-sm ta:leading-5 ta:text-green-700">
                                     {message}
                                 </p>
                             </div>
@@ -110,15 +110,15 @@ export const toast = {
         toastPrimitive.custom(
             (t) => (
                 <div
-                    className={`${t.visible ? "ta-animate-enter" : "ta-animate-leave"} ta-pointer-events-auto ta-flex ta-w-full ta-max-w-md ta-rounded-lg ta-bg-blue-100 ta-ring-1 ta-ring-blue-800 ta-ring-opacity-50`}
+                    className={`${t.visible ? "ta:animate-enter" : "ta:animate-leave"} ta:pointer-events-auto ta:flex ta:w-full ta:max-w-md ta:rounded-lg ta:bg-blue-100 ta:ring-1 ta:ring-blue-800 ta:ring-opacity-50`}
                 >
-                    <div className="ta-w-0 ta-flex-1 ta-p-4">
-                        <div className="ta-flex ta-items-center">
-                            <div className="ta-flex-shrink-0">
-                                <CircleAlert className="ta-h-6 ta-w-6 ta-text-blue-600" />
+                    <div className="ta:w-0 ta:flex-1 ta:p-4">
+                        <div className="ta:flex ta:items-center">
+                            <div className="ta:flex-shrink-0">
+                                <CircleAlert className="ta:h-6 ta:w-6 ta:text-blue-600" />
                             </div>
-                            <div className="ta-ml-3 ta-flex ta-md:flex ta-md:justify-between">
-                                <p className="ta-text-sm ta-leading-5 ta-text-blue-700">
+                            <div className="ta:ml-3 ta:flex ta:md:flex ta:md:justify-between">
+                                <p className="ta:text-sm ta:leading-5 ta:text-blue-700">
                                     {message}
                                 </p>
                             </div>

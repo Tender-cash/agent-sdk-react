@@ -11,7 +11,6 @@ import "react-loading-skeleton/dist/skeleton.css";
 /* -------------------------------------------------------------------------- */
 import defaultTheme from "../../styles/default-theme";
 import { getAxiosInstance, setAxiosInstance } from "../lib/axios-instance";
-import "../../styles/index.scss";
 import { applyTheme } from "../lib/utils";
 import { TenderSpinner } from "../_components";
 import { ConfigContextType } from "../types";
@@ -55,7 +54,7 @@ const ConfigProvider: React.FC<ConfigProviderProps> = ({
         client: getAxiosInstance(),
         CONFIRM_INTERVAL: config.confirmationInterval || DEFAULT_CONFIRM_INTERVAL,
       }}>
-        <div className="ta-mx-auto ta-flex ta-w-full ta-flex-col ta-gap-6 ta-bg-white ta-rounded-2xl ta-border ta-gap-4 sm:ta-w-[600px] ta-items-start ta-w-full">
+        <div className="ta:relative ta:mx-auto ta:flex ta:flex-col ta:gap-6 ta:bg-white ta:rounded-2xl ta:border ta:border-[#EAECF0] ta:gap-4 ta:w-[600px] ta:items-start">
           {!isLoading ? 
           <TenderSpinner />
           : 
@@ -65,7 +64,7 @@ const ConfigProvider: React.FC<ConfigProviderProps> = ({
         <Toaster
             position="top-right"
             gutter={8}
-            containerClassName="!pam-z-[999999]"
+            containerClassName="!ta:p-0 !ta:m-0 !ta:z-[999999]"
         />
       </ConfigContext.Provider>
   );

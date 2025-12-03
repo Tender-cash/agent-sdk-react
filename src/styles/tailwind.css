@@ -1,0 +1,52 @@
+@import "tailwindcss" prefix(ta);
+
+@theme {
+  /* Colors mapped to runtime CSS variables (tas-*) */
+  --color-primary: var(--tas-primary);
+  --color-info: var(--tas-info);
+  --color-secondary: var(--tas-secondary);
+  --color-secondary-body: var(--tas-secondary-body);
+  --color-line: var(--tas-line);
+  --color-title: var(--tas-title);
+  --color-body: var(--tas-body);
+  --color-warning: var(--tas-warning);
+  --color-success: var(--tas-success);
+  --color-danger: var(--tas-danger);
+
+  /* Border radius tokens */
+  --radius-modal: var(--tas-modal-radius);
+
+  /* Font family (reuse CircularStd + system fallbacks defined in index.css) */
+  --font-sans: var(--circular-std-font), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* Screens / breakpoints (from tailwind.config.ts screens + extend.screens) */
+  --breakpoint-xs: 375px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-1xl: 1440px;
+  --breakpoint-2xl: 1536px;
+  --breakpoint-2xl-5: 1600px;
+  --breakpoint-2xl\.max: 1600px;
+  --breakpoint-max-sm: 639px;
+  --breakpoint-3xl: 1600px;
+
+  /* Transition duration override */
+  --duration-DEFAULT: 150ms;
+
+  /* Custom animation mapping (shimmer keyframes below) */
+  --animate-shimmer: shimmer 0.5s infinite linear;
+}
+
+@keyframes shimmer {
+  0% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
