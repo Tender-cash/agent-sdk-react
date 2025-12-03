@@ -98,7 +98,7 @@ const RenderPendingDetails = ({
                 ) : (
                     <>
                         <Button
-                            className="ta:block ta:min-w-[60px] ta:rounded-lg !ta:border !ta:border-[#D0D5DD] ta:bg-transparent ta:p-2 !ta:text-black"
+                            className="ta:block ta:min-w-[60px] ta:rounded-lg !ta:border !ta:border-[#D0D5DD] ta:bg-transparent ta:p-2 !ta:text-black !ta:bg-transparent"
                             type="button"
                             variant="outline"
                             disabled={loading}

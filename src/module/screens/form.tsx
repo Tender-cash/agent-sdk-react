@@ -42,7 +42,7 @@ const PaymentForm = ({ amount, fiatCurrency, networks, selectedNetwork, selected
               value={selectedNetwork}
               className="sm:ta:w-full"
               disabled={formLoading}
-              triggerClassName="ta:w-full focus:ta:outline-none"
+              triggerClassName="ta:w-full focus:ta:outline-none !ta:bg-transparent"
               placeholder="Select Network / Chain"
               loading={formLoading}
             />
@@ -56,7 +56,7 @@ const PaymentForm = ({ amount, fiatCurrency, networks, selectedNetwork, selected
               disabled={!selectedNetwork || formLoading}
               loading={formLoading}
               className="sm:ta:w-full"
-              triggerClassName="ta:w-full focus:ta:outline-none"
+              triggerClassName="ta:w-full focus:ta:outline-non !ta:bg-transparent"
               placeholder="Select Currency"
             />
           </div>
