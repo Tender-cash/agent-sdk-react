@@ -17,19 +17,19 @@ interface SpinnerProps {
 
 export const Spinner: FC<SpinnerProps> = ({ size = 24, className }) => {
     return (
-        <div className={cn(`ta-flex ta-w-full ta-items-center ta-justify-center`, className)}>
-            <Loader className="ta-animate-spin" size={size} />
+        <div className={cn(`ta:flex ta:w-full ta:items-center ta:justify-center`, className)}>
+            <Loader className="ta:animate-spin" size={size} />
         </div>
     );
 };
 
 export const TenderSpinner: FC<SpinnerProps> = ({ size = 24, className }) => {
   return (
-      <div className={cn(`ta-flex ta-w-full ta-min-h-[60vh] ta-items-center ta-justify-center`, className)}>
+      <div className={cn(`ta:flex ta:w-full ta:min-h-[60vh] ta:items-center ta:justify-center`, className)}>
         <img 
           src={tenderIcon}
           alt="loading---"
-          className={`ta-transition-opacity ta-duration-2000 ta-animate-[shimmer_1.5s_infinite] ta-w-[100px]`}
+          className={`ta:transition-opacity ta:duration-2000 ta:animate-[shimmer_1.5s_infinite] ta:w-[100px]`}
         />
       </div>
   );

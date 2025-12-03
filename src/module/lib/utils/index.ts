@@ -17,10 +17,9 @@ function cn(...inputs: ClassValue[]): string {
 }
 
 enum TENDER_URLS {
-  test = "http://localhost:9090",
-  // test = "https://stagapi.tender.cash",
+  test = "https://stagapi.tender.cash",
   live = "https://secureapi.tender.cash",
-  // local = "http://localhost:9090",
+  local = "http://localhost:9090",
 }
 
 const URL_PATHS = {

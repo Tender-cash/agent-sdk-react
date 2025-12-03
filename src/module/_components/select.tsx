@@ -99,36 +99,36 @@ export const SelectDropdown = ({
 	}, [isOpen]);
 
 	return (
-		<div ref={selectRef} className={`ta-relative ta-w-full sm:ta-w-fit ${className}`} tabIndex={0} onKeyDown={handleKeyDown}>
+		<div ref={selectRef} className={`ta:relative ta:w-full sm:ta:w-fit ${className}`} tabIndex={0} onKeyDown={handleKeyDown}>
 			<button
-				className={`ta-flex ta-items-center ta-justify-between ta-rounded-lg !ta-border ta-border-black/10 ta-px-3 ta-py-2 ta-text-sm ta-text-black ${triggerClassName} ${disabled ? "ta-cursor-not-allowed ta-opacity-50" : "ta-cursor-pointer"} ${isOpen ? "!ta-bg-white" : "!ta-bg-white/10"}`}
+				className={`ta:flex ta:items-center ta:justify-between ta:rounded-lg !ta:border ta:border-[0.1px] ta:px-3 ta:py-2 ta:text-sm ta:text-black ${triggerClassName} ${disabled ? "ta:cursor-not-allowed ta:opacity-50" : "ta:cursor-pointer"} ${isOpen ? "!ta:bg-white" : "!ta:bg-white/10"}`}
 				onClick={toggleDropdown}
 				disabled={disabled}
 				type="button"
 			>
-				<span className="ta-flex ta-flex-row ta-gap-2">{value?.icon && <img src={value.icon} className="ta-w-[20px] ta-h-[20px]" />}{value?.label || placeholder} </span>
-				<span className="ta-flex ta-flex-row ta-gap-2">{loading ?  <Spinner size={15} /> : <ChevronDown size={15} />}</span>
+				<span className="ta:flex ta:flex-row ta:gap-2">{value?.icon && <img src={value.icon} className="ta:w-[20px] ta:h-[20px]" />}{value?.label || placeholder} </span>
+				<span className="ta:flex ta:flex-row ta:gap-2">{loading ?  <Spinner size={15} /> : <ChevronDown size={15} />}</span>
 			</button>
 
 			{isOpen && (
 				<ul
-					className={`ta-transparent_style ta-absolute ta-z-10 ta-mt-2 ta-h-fit ta-max-h-40 ta-w-full ta-overflow-y-auto ta-overflow-x-hidden ta-rounded-lg ta-border ta-border-black/10 ta-shadow-lg
-					ta-backdrop-blur-lg ${shouldOpenUp ? "ta-bottom-full mb-2" : "ta-top-full ta-mt-2"} ${dropdownClassName}`}
+					className={`ta:transparent_style ta:absolute ta:z-10 ta:mt-2 ta:h-fit ta:max-h-40 ta:w-full ta:overflow-y-auto ta:overflow-x-hidden ta:rounded-lg ta:border ta:border-black/10 ta:shadow-lg
+					ta:backdrop-blur-lg ${shouldOpenUp ? "ta:bottom-full mb-2" : "ta:top-full ta:mt-2"} ${dropdownClassName}`}
 					role="listbox"
 				>
 					{options.map((option: Option, index) => (
 						<li
 							key={option.value}
-							className={`ta-relative ta-flex ta-cursor-pointer ta-items-center ta-rounded ta-p-2 ta-px-4 ta-py-2 ta-text-base ta-outline-none hover:ta-bg-white/20
-							${highlightedIndex === index || option.label === value?.label ? "ta-bg-white/20" : ""}`}
+							className={`ta:relative ta:flex ta:cursor-pointer ta:items-center ta:rounded ta:p-2 ta:px-4 ta:py-2 ta:text-base ta:outline-none hover:ta:bg-white/20
+							${highlightedIndex === index || option.label === value?.label ? "ta:bg-white/20" : ""}`}
 							onClick={() => handleOptionSelect(option)}
 							onMouseEnter={() => setHighlightedIndex(index)}
 							role="option"
 							aria-selected={value?.value === option.value}
 						>
-              <span className="ta-flex ta-flex-row ta-gap-2">{option?.icon && <img src={option.icon} className="ta-w-[20px] ta-h-[20px]" />}{option?.label} </span>
+              <span className="ta:flex ta:flex-row ta:gap-2">{option?.icon && <img src={option.icon} className="ta:w-[20px] ta:h-[20px]" />}{option?.label} </span>
 							{option.label === value?.label && (
-								<span className="ta-absolute ta-right-3 ta-flex ta-h-3.5 ta-w-3.5 ta-items-center ta-justify-center">
+								<span className="ta:absolute ta:right-3 ta:flex ta:h-3.5 ta:w-3.5 ta:items-center ta:justify-center">
 									<Check className="h-4 w-4" />
 								</span>
 							)}

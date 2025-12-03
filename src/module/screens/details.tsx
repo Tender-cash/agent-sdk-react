@@ -31,20 +31,20 @@ const RenderPendingDetails = ({
                 description="Copy and paste payout wallet to complete your purchase."
             />
 
-            <div className="ta-border-t-1 ta-gep-2 ta-my-4 ta-flex ta-w-full ta-flex-col ta-px-6">
-                <div className="ta-flex ta-flex-col ta-items-center ta-justify-center ta-p-4">
+            <div className="ta:gep-2 ta:my-4 ta:flex ta:w-full ta:flex-col ta:px-6">
+                <div className="ta:flex ta:flex-col ta:items-center ta:justify-center ta:p-4">
                     <p>YOU'RE PAYING</p>
-                    <div className="ta-flex ta-flex-row ta-gap-2">
-                        <span className="leading-[48px] ta-text-[48px] ta-font-bold">
+                    <div className="ta:flex ta:flex-row ta:gap-2">
+                        <span className="leading-[48px] ta:text-[48px] ta:font-bold">
                             {amount}
                         </span>
-                        <span className="ta-mb-4 ta-mt-auto ta-text-xl ta-font-bold ta-text-secondary">
+                        <span className="ta:mb-4 ta:mt-auto ta:text-xl ta:font-bold ta:text-secondary">
                             {coin?.toUpperCase()}
                         </span>
                     </div>
                 </div>
-                <div className="ta-w-max-full ta-flex ta-flex-row ta-justify-between ta-gap-4 ta-text-wrap ta-rounded-2xl ta-border ta-border-dashed ta-border-[#E6E6E6] ta-bg-[#FAFAFA] ta-p-4">
-                    <div className="ta-flex ta-w-1/4 ta-flex-row">
+                <div className="ta:w-max-full ta:flex ta:flex-row ta:justify-between ta:gap-4 ta:text-wrap ta:rounded-2xl ta:border ta:border-dashed ta:border-[#E6E6E6] ta:bg-[#FAFAFA] ta:p-4">
+                    <div className="ta:flex ta:w-1/4 ta:flex-row">
                         <QRCode
                             size={256}
                             value={address}
@@ -56,28 +56,28 @@ const RenderPendingDetails = ({
                             viewBox={`0 0 256 256`}
                         />
                     </div>
-                    <div className="ta-my-auto ta-flex ta-w-2/4 ta-flex-col ta-text-pretty">
-                        <h3 className="ta-text-base ta-text-secondary">
+                    <div className="ta:my-auto ta:flex ta:w-2/4 ta:flex-col ta:text-pretty">
+                        <h3 className="ta:text-base ta:text-secondary">
                             USDC Deposit Address
                         </h3>
-                        <p className="ta-break-all ta-text-[13px] ta-underline ta-underline-offset-4">
+                        <p className="ta:break-all ta:text-[13px] ta:underline ta:underline-offset-4">
                             {address}
                         </p>
                     </div>
-                    <div className="ta-my-auto ta-flex ta-w-1/4 ta-flex-row ta-justify-end">
+                    <div className="ta:my-auto ta:flex ta:w-1/4 ta:flex-row ta:justify-end">
                         <Button
-                            className="ta-flex-row ta-rounded-2xl !ta-border-[#D0D5DD] !ta-bg-white !ta-px-3 !ta-py-1"
+                            className="ta:flex-row ta:rounded-2xl !ta:border-[#D0D5DD] !ta:bg-white !ta:px-3 !ta:py-1"
                             variant="outline"
                             onClick={() => copy(address)}
                         >
-                            <span className="ta-flex ta-flex-row ta-items-center ta-justify-center ta-gap-1 ta-text-[14px] ta-font-medium ta-text-[#344054]">
+                            <span className="ta:flex ta:flex-row ta:items-center ta:justify-center ta:gap-1 ta:text-[14px] ta:font-medium ta:text-[#344054]">
                                 <Copy size={18} />
                                 <span>Copy</span>
                             </span>
                         </Button>
                     </div>
                 </div>
-                <div className="ta-my-4 ta-text-[14px] ta-text-secondary">
+                <div className="ta:my-4 ta:text-[14px] ta:text-secondary">
                     <p>
                         Send only USDC to this deposit address - supports only
                         USDC tokens on movement network. If you send wrong
@@ -87,26 +87,27 @@ const RenderPendingDetails = ({
             </div>
             <FormFooter>
                 {loading ? (
-                    <div className="ta-flex ta-w-full ta-flex-row ta-items-center ta-gap-4">
+                    <div className="ta:flex ta:w-full ta:flex-row ta:items-center ta:gap-4">
                         <span>
                             <Spinner size={16} />{" "}
                         </span>
-                        <span className="ta-text-sm ta-text-secondary">
+                        <span className="ta:text-sm ta:text-secondary">
                             Confirming Payment....
                         </span>
                     </div>
                 ) : (
                     <>
                         <Button
-                            className="ta-block ta-min-w-[60px] ta-rounded-lg !ta-border !ta-border-secondary ta-bg-transparent ta-p-2 !ta-text-black/40"
+                            className="ta:block ta:min-w-[60px] ta:rounded-lg !ta:border !ta:border-[#D0D5DD] ta:bg-transparent ta:p-2 !ta:text-black"
                             type="button"
+                            variant="outline"
                             disabled={loading}
                             onClick={() => (loading ? null : cancelPayment())}
                         >
                             {loading ? <Spinner size={16} /> : "Cancel"}
                         </Button>
                         <Button
-                            className="ta-block ta-min-w-[60px] ta-rounded-lg ta-bg-black ta-p-2 ta-text-white"
+                            className="ta:block ta:min-w-[60px] ta:rounded-lg ta:bg-black ta:p-2 ta:text-white"
                             type="button"
                             disabled={loading}
                             onClick={() => (loading ? null : confirmPayment())}
@@ -147,26 +148,26 @@ const RenderFinishedDetails = ({
                 icon={iconTOShow}
             />
 
-            <div className="ta-border-t-1 ta-flex ta-flex-col ta-gap-2 ta-px-6">
-                <div className="ta-w-max-full ta-flex ta-flex-row ta-justify-between ta-gap-4 ta-text-wrap ta-rounded-2xl ta-border ta-border-dashed ta-border-[#E6E6E6] ta-bg-[#FAFAFA] ta-p-4">
-                    <div className="ta-flex ta-w-1/4 ta-flex-row">
+            <div className="ta:border-t-1 ta:flex ta:flex-col ta:gap-2 ta:px-6">
+                <div className="ta:w-max-full ta:flex ta:flex-row ta:justify-between ta:gap-4 ta:text-wrap ta:rounded-2xl ta:border ta:border-dashed ta:border-[#E6E6E6] ta:bg-[#FAFAFA] ta:p-4">
+                    <div className="ta:flex ta:w-1/4 ta:flex-row">
                         <QrCode size={140} />
                     </div>
-                    <div className="ta-my-auto ta-flex ta-w-2/4 ta-flex-col ta-justify-start ta-text-pretty">
-                        <h3 className="ta-text-base ta-text-secondary">
+                    <div className="ta:my-auto ta:flex ta:w-2/4 ta:flex-col ta:justify-start ta:text-pretty">
+                        <h3 className="ta:text-base ta:text-secondary">
                             {coin.toUpperCase()} Deposit Address
                         </h3>
-                        <p className="ta-break-all ta-text-[13px] ta-underline ta-underline-offset-4">
+                        <p className="ta:break-all ta:text-[13px] ta:underline ta:underline-offset-4">
                             {address}
                         </p>
                     </div>
-                    <div className="ta-my-auto ta-flex ta-w-1/4 ta-flex-row ta-justify-end">
+                    <div className="ta:my-auto ta:flex ta:w-1/4 ta:flex-row ta:justify-end">
                         <Button
-                            className="ta-flex-row ta-rounded-2xl !ta-border-[#D0D5DD] !ta-bg-white !ta-px-3 !ta-py-1"
+                            className="ta:flex-row ta:rounded-2xl !ta:border-[#D0D5DD] !ta:bg-white !ta:px-3 !ta:py-1"
                             variant="outline"
                             onClick={() => copy(address)}
                         >
-                            <span className="ta-flex ta-flex-row ta-items-center ta-justify-center ta-gap-1 ta-text-[14px] ta-font-medium ta-text-[#344054]">
+                            <span className="ta:flex ta:flex-row ta:items-center ta:justify-center ta:gap-1 ta:text-[14px] ta:font-medium ta:text-[#344054]">
                                 <Copy size={18} />
                                 <span>Copy</span>
                             </span>
@@ -174,49 +175,49 @@ const RenderFinishedDetails = ({
                     </div>
                 </div>
                 {completed ? (
-                    <div className="ta-flex ta-flex-col ta-items-center ta-justify-center ta-p-4">
+                    <div className="ta:flex ta:flex-col ta:items-center ta:justify-center ta:p-4">
                         <p>YOU PAID</p>
-                        <div className="ta-flex ta-flex-row ta-gap-2">
-                            <span className="leading-[48px] ta-text-[38px] ta-font-bold">
+                        <div className="ta:flex ta:flex-row ta:gap-2">
+                            <span className="leading-[48px] ta:text-[38px] ta:font-bold">
                                 {amountPaid || amount}
                             </span>
-                            <span className="ta-mb-4 ta-mt-auto ta-text-xl ta-font-bold ta-text-secondary">
+                            <span className="ta:mb-4 ta:mt-auto ta:text-xl ta:font-bold ta:text-secondary">
                                 {coin.toUpperCase()}
                             </span>
                         </div>
                     </div>
                 ) : (
-                    <div className="ta-flex ta-w-full ta-flex-row ta-items-center ta-justify-between ta-p-4">
-                        <div className="ta-flex ta-w-1/2 ta-flex-col ta-items-center ta-justify-center ta-p-4">
-                            <p className="ta-text-[12px] ta-text-secondary">
+                    <div className="ta:flex ta:w-full ta:flex-row ta:items-center ta:justify-between ta:p-4">
+                        <div className="ta:flex ta:w-1/2 ta:flex-col ta:items-center ta:justify-center ta:p-4">
+                            <p className="ta:text-[12px] ta:text-secondary">
                                 YOU PAID
                             </p>
-                            <div className="ta-flex ta-flex-row ta-gap-2">
-                                <span className="leading-[48px] ta-text-[38px] ta-font-bold">
+                            <div className="ta:flex ta:flex-row ta:gap-2">
+                                <span className="leading-[48px] ta:text-[38px] ta:font-bold">
                                     {amountPaid}
                                 </span>
-                                <span className="ta-mb-4 ta-mt-auto ta-text-xl ta-font-bold ta-text-secondary">
+                                <span className="ta:mb-4 ta:mt-auto ta:text-xl ta:font-bold ta:text-secondary">
                                     {coin.toUpperCase()}
                                 </span>
                             </div>
                         </div>
-                        <div className="ta-flex ta-w-1/2 ta-flex-col ta-items-center ta-justify-center ta-p-4">
-                            <p className="ta-text-[12px] ta-text-secondary">
+                        <div className="ta:flex ta:w-1/2 ta:flex-col ta:items-center ta:justify-center ta:p-4">
+                            <p className="ta:text-[12px] ta:text-secondary">
                                 {paymentType == "over" ? "EXCESS" : "REMAINING"}
                             </p>
-                            <div className="ta-flex ta-flex-row ta-gap-2">
-                                <span className="leading-[48px] ta-text-[38px] ta-font-bold">
+                            <div className="ta:flex ta:flex-row ta:gap-2">
+                                <span className="leading-[48px] ta:text-[38px] ta:font-bold">
                                     {paymentType == "over" ? excess : balance}
                                 </span>
-                                <span className="ta-mb-4 ta-mt-auto ta-text-xl ta-font-bold ta-text-secondary">
+                                <span className="ta:mb-4 ta:mt-auto ta:text-xl ta:font-bold ta:text-secondary">
                                     {coin.toUpperCase()}
                                 </span>
                             </div>
                         </div>
                     </div>
                 )}
-                <div className="ta-my-4 ta-text-[14px] ta-text-secondary">
-                    <p className="ta-text-sm ta-text-secondary">
+                <div className="ta:my-4 ta:text-[14px] ta:text-secondary">
+                    <p className="ta:text-sm ta:text-secondary">
                         {responseText}
                     </p>
                 </div>
@@ -224,16 +225,16 @@ const RenderFinishedDetails = ({
 
             <FormFooter>
                 {isPartial ? (
-                    <div className="ta-flex ta-w-full ta-flex-row ta-items-center ta-gap-4">
+                    <div className="ta:flex ta:w-full ta:flex-row ta:items-center ta:gap-4">
                         <span>
                             <Spinner size={16} />{" "}
                         </span>
-                        <span className="ta-text-sm ta-text-secondary">
+                        <span className="ta:text-sm ta:text-secondary">
                             Transaction is pending ...
                         </span>
                     </div>
                 ) : (
-                    <span className="ta-text-sm ta-text-secondary">
+                    <span className="ta:text-sm ta:text-secondary">
                         You will be redirected shortly
                     </span>
                 )}
