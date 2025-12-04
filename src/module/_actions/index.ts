@@ -42,6 +42,7 @@ const useAgentSdkAction = () => {
   const fetchCoins = async (network: Option) => {
     setCoinFetching(true);
     setNetwork(network);
+    setCoin(null);
     const coinsDF = await client?.get(`${URL_PATHS.CHAINS}/${network.value}/currency`) as APIResponse<PaymentCoin[]>;
     if (coinsDF.data.status === "success"){
       const coinsList = coinsDF.data?.data;
