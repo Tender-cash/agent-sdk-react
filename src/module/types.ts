@@ -86,6 +86,7 @@ interface paymentResponseProps {
   amount: number;
   amountPaid: number;
   coin: string;
+  chain: string;
   loading: boolean;
   status?: PaymentStatusProps;
   balance?: string;

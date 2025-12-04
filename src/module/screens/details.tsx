@@ -19,6 +19,7 @@ const RenderPendingDetails = ({
     amount,
     amountPaid,
     coin,
+    chain,
     loading,
     cancelPayment,
     confirmPayment,
@@ -58,7 +59,7 @@ const RenderPendingDetails = ({
                     </div>
                     <div className="ta:my-auto ta:flex ta:w-2/4 ta:flex-col ta:text-pretty">
                         <h3 className="ta:text-base ta:text-secondary">
-                            USDC Deposit Address
+                            {coin.toUpperCase()} Deposit Address
                         </h3>
                         <p className="ta:break-all ta:text-[13px] ta:underline ta:underline-offset-4">
                             {address}
@@ -79,8 +80,8 @@ const RenderPendingDetails = ({
                 </div>
                 <div className="ta:my-4 ta:text-[14px] ta:text-secondary">
                     <p>
-                        Send only USDC to this deposit address - supports only
-                        USDC tokens on movement network. If you send wrong
+                        Send only {coin.toUpperCase()} to this deposit address - supports only
+                        {coin.toUpperCase()} tokens on {chain.toUpperCase()} network. If you send wrong
                         tokens, they'll be lost.
                     </p>
                 </div>
@@ -249,6 +250,7 @@ const PaymentDetails = ({
     amount,
     amountPaid,
     coin,
+    chain,
     loading,
     status,
     balance,
@@ -263,6 +265,7 @@ const PaymentDetails = ({
                 amount={Number(amount)}
                 amountPaid={Number(amountPaid)}
                 coin={String(coin)}
+                chain={String(chain)}
                 loading={loading}
                 status={status}
                 balance={balance}
@@ -278,6 +281,7 @@ const PaymentDetails = ({
             amount={Number(amount)}
             amountPaid={Number(amountPaid)}
             coin={String(coin)}
+            chain={String(chain)}
             loading={loading}
             status={status}
             balance={balance}
