@@ -1,9 +1,10 @@
+import { useEffect, useState } from "react";
 import { Copy, QrCode } from "lucide-react";
 import { useCopyToClipboard } from "usehooks-ts";
 import QRCode from "react-qr-code";
 
 import { Button, Spinner } from "../_components";
-import { FormHeader, FormFooter } from "../_components/layout";
+import { FormHeader, FormFooter, FormBody } from "../_components/layout";
 import {
     PAYMENT_STATUS,
     paymentResponseProps,
@@ -12,6 +13,7 @@ import {
     paymentStatusMap,
     paymentDetailsProps,
 } from "../types";
+import { useConfig } from "../_context";
 import { sentenceCase } from "../lib/utils";
 
 const RenderPendingDetails = ({
@@ -23,8 +25,47 @@ const RenderPendingDetails = ({
     loading,
     cancelPayment,
     confirmPayment,
+    expirePayment,
 }: paymentResponseProps & paymentDetailsProps) => {
     const [_, copy] = useCopyToClipboard();
+    const { paymentExpirySeconds } = useConfig();
+
+    const initialSeconds =
+        Number.isFinite(paymentExpirySeconds || 0) &&
+        (paymentExpirySeconds || 0) > 0
+            ? (paymentExpirySeconds as number)
+            : 30 * 60; // default 30 minutes
+
+    const [secondsLeft, setSecondsLeft] = useState(initialSeconds);
+    const [hasExpired, setHasExpired] = useState(false);
+
+    useEffect(() => {
+        // Start countdown timer
+        const interval = window.setInterval(() => {
+            setSecondsLeft((prev) => {
+                if (prev <= 1) {
+                    window.clearInterval(interval);
+                    setHasExpired(true);
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+
+        return () => window.clearInterval(interval);
+    }, []);
+
+    useEffect(() => {
+        if (hasExpired) {
+            // Automatically trigger expiry flow when timer runs out
+            expirePayment();
+        }
+    }, [hasExpired, expirePayment]);
+
+    const minutes = Math.floor(secondsLeft / 60)
+        .toString()
+        .padStart(2, "0");
+    const seconds = (secondsLeft % 60).toString().padStart(2, "0");
     return (
         <>
             <FormHeader
@@ -32,60 +73,70 @@ const RenderPendingDetails = ({
                 description="Copy and paste payout wallet to complete your purchase."
             />
 
-            <div className="ta:gep-2 ta:my-4 ta:flex ta:w-full ta:flex-col ta:px-6">
-                <div className="ta:flex ta:flex-col ta:items-center ta:justify-center ta:p-4">
-                    <p>YOU'RE PAYING</p>
-                    <div className="ta:flex ta:flex-row ta:gap-2">
-                        <span className="leading-[48px] ta:text-[48px] ta:font-bold">
-                            {amount}
-                        </span>
-                        <span className="ta:mb-4 ta:mt-auto ta:text-xl ta:font-bold ta:text-secondary">
-                            {coin?.toUpperCase()}
-                        </span>
-                    </div>
-                </div>
-                <div className="ta:w-max-full ta:flex ta:flex-row ta:justify-between ta:gap-4 ta:text-wrap ta:rounded-2xl ta:border ta:border-dashed ta:border-[#E6E6E6] ta:bg-[#FAFAFA] ta:p-4">
-                    <div className="ta:flex ta:w-1/4 ta:flex-row">
-                        <QRCode
-                            size={256}
-                            value={address}
-                            style={{
-                                height: "auto",
-                                maxWidth: "100%",
-                                width: "100%",
-                            }}
-                            viewBox={`0 0 256 256`}
-                        />
-                    </div>
-                    <div className="ta:my-auto ta:flex ta:w-2/4 ta:flex-col ta:text-pretty">
-                        <h3 className="ta:text-base ta:text-secondary">
-                            {coin.toUpperCase()} Deposit Address
-                        </h3>
-                        <p className="ta:break-all ta:text-[13px] ta:underline ta:underline-offset-4">
-                            {address}
+            <FormBody>
+                <div className="ta:gap-1 ta:flex ta:w-full ta:flex-col ta:px-6">
+                    <div className="ta:flex ta:flex-col ta:items-center ta:justify-center ta:p-4">
+                        <p>YOU'RE PAYING</p>
+                        <div className="ta:flex ta:flex-row ta:gap-2">
+                            <span className="ta:text-[48px] ta:font-bold leading-[48px]">
+                                {amount}
+                            </span>
+                            <span className="ta:mb-4 ta:mt-auto ta:text-xl ta:font-bold ta:text-secondary">
+                                {coin?.toUpperCase()}
+                            </span>
+                        </div>
+                        <p className="ta:mt-2 ta:text-sm ta:text-primary">
+                            Payment expires in{" "}
+                            <span className="ta:font-mono">
+                                {minutes}:{seconds}
+                            </span>
                         </p>
                     </div>
-                    <div className="ta:my-auto ta:flex ta:w-1/4 ta:flex-row ta:justify-end">
-                        <Button
-                            className="ta:flex-row ta:rounded-2xl !ta:border-[#D0D5DD] !ta:bg-white !ta:px-3 !ta:py-1"
-                            variant="outline"
-                            onClick={() => copy(address)}
-                        >
-                            <span className="ta:flex ta:flex-row ta:items-center ta:justify-center ta:gap-1 ta:text-[14px] ta:font-medium ta:text-[#344054]">
-                                <Copy size={18} />
-                                <span>Copy</span>
-                            </span>
-                        </Button>
+                    <div className="ta:w-max-full ta:flex ta:flex-row ta:justify-between ta:gap-4 ta:text-wrap ta:rounded-2xl ta:border ta:border-dashed ta:border-[#E6E6E6] ta:bg-[#FAFAFA] ta:p-4">
+                        <div className="ta:flex ta:w-1/4 ta:flex-row">
+                            <QRCode
+                                size={256}
+                                value={address}
+                                style={{
+                                    height: "auto",
+                                    maxWidth: "100%",
+                                    width: "100%",
+                                }}
+                                viewBox={`0 0 256 256`}
+                            />
+                        </div>
+                        <div className="ta:my-auto ta:flex ta:w-2/4 ta:flex-col ta:text-pretty">
+                            <h3 className="ta:text-base ta:text-secondary">
+                                {coin.toUpperCase()} Deposit Address
+                            </h3>
+                            <p className="ta:break-all ta:text-[13px] ta:underline ta:underline-offset-4">
+                                {address}
+                            </p>
+                        </div>
+                        <div className="ta:my-auto ta:flex ta:w-1/4 ta:flex-row ta:justify-end">
+                            <Button
+                                className="ta:flex-row ta:rounded-2xl !ta:border-[#D0D5DD] !ta:bg-white !ta:px-3 !ta:py-1"
+                                variant="outline"
+                                onClick={() => copy(address)}
+                            >
+                                <span className="ta:flex ta:flex-row ta:items-center ta:justify-center ta:gap-1 ta:text-[14px] ta:font-medium ta:text-[#344054]">
+                                    <Copy size={18} />
+                                    <span>Copy</span>
+                                </span>
+                            </Button>
+                        </div>
+                    </div>
+                    <div className="ta:my-4 ta:text-[14px] ta:text-secondary">
+                        <p>
+                            Send only {coin.toUpperCase()} to this deposit
+                            address - supports only
+                            {coin.toUpperCase()} tokens on {chain.toUpperCase()}{" "}
+                            network. If you send wrong tokens, they'll be lost.
+                        </p>
                     </div>
                 </div>
-                <div className="ta:my-4 ta:text-[14px] ta:text-secondary">
-                    <p>
-                        Send only {coin.toUpperCase()} to this deposit address - supports only
-                        {coin.toUpperCase()} tokens on {chain.toUpperCase()} network. If you send wrong
-                        tokens, they'll be lost.
-                    </p>
-                </div>
-            </div>
+            </FormBody>
+
             <FormFooter>
                 {loading ? (
                     <div className="ta:flex ta:w-full ta:flex-row ta:items-center ta:gap-4">
@@ -149,7 +200,8 @@ const RenderFinishedDetails = ({
                 icon={iconTOShow}
             />
 
-            <div className="ta:border-t-1 ta:flex ta:flex-col ta:gap-2 ta:px-6">
+            <FormBody>
+                {/* <div className="ta:border-t-1 ta:flex ta:flex-col ta:gap-2 ta:px-6"> */}
                 <div className="ta:w-max-full ta:flex ta:flex-row ta:justify-between ta:gap-4 ta:text-wrap ta:rounded-2xl ta:border ta:border-dashed ta:border-[#E6E6E6] ta:bg-[#FAFAFA] ta:p-4">
                     <div className="ta:flex ta:w-1/4 ta:flex-row">
                         <QrCode size={140} />
@@ -179,7 +231,7 @@ const RenderFinishedDetails = ({
                     <div className="ta:flex ta:flex-col ta:items-center ta:justify-center ta:p-4">
                         <p>YOU PAID</p>
                         <div className="ta:flex ta:flex-row ta:gap-2">
-                            <span className="leading-[48px] ta:text-[38px] ta:font-bold">
+                            <span className="ta:text-[38px] ta:font-bold leading-[48px]">
                                 {amountPaid || amount}
                             </span>
                             <span className="ta:mb-4 ta:mt-auto ta:text-xl ta:font-bold ta:text-secondary">
@@ -194,7 +246,7 @@ const RenderFinishedDetails = ({
                                 YOU PAID
                             </p>
                             <div className="ta:flex ta:flex-row ta:gap-2">
-                                <span className="leading-[48px] ta:text-[38px] ta:font-bold">
+                                <span className="ta:text-[38px] ta:font-bold leading-[48px]">
                                     {amountPaid}
                                 </span>
                                 <span className="ta:mb-4 ta:mt-auto ta:text-xl ta:font-bold ta:text-secondary">
@@ -207,7 +259,7 @@ const RenderFinishedDetails = ({
                                 {paymentType == "over" ? "EXCESS" : "REMAINING"}
                             </p>
                             <div className="ta:flex ta:flex-row ta:gap-2">
-                                <span className="leading-[48px] ta:text-[38px] ta:font-bold">
+                                <span className="ta:text-[38px] ta:font-bold leading-[48px]">
                                     {paymentType == "over" ? excess : balance}
                                 </span>
                                 <span className="ta:mb-4 ta:mt-auto ta:text-xl ta:font-bold ta:text-secondary">
@@ -222,7 +274,8 @@ const RenderFinishedDetails = ({
                         {responseText}
                     </p>
                 </div>
-            </div>
+                {/* </div> */}
+            </FormBody>
 
             <FormFooter>
                 {isPartial ? (
@@ -257,6 +310,7 @@ const PaymentDetails = ({
     excess,
     cancelPayment,
     confirmPayment,
+    expirePayment,
 }: paymentResponseProps & paymentDetailsProps) => {
     if (status == PAYMENT_STATUS.PENDING) {
         return (
@@ -271,6 +325,7 @@ const PaymentDetails = ({
                 balance={balance}
                 cancelPayment={cancelPayment}
                 confirmPayment={confirmPayment}
+                expirePayment={expirePayment}
             />
         );
     }

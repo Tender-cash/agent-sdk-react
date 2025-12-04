@@ -25,7 +25,7 @@ export const Spinner: FC<SpinnerProps> = ({ size = 24, className }) => {
 
 export const TenderSpinner: FC<SpinnerProps> = ({ size = 24, className }) => {
   return (
-      <div className={cn(`ta:flex ta:w-full ta:min-h-[60vh] ta:items-center ta:justify-center`, className)}>
+      <div className={cn(`ta:flex ta:w-full ta:h-[600px] ta:items-center ta:justify-center`, className)}>
         <img 
           src={tenderIcon}
           alt="loading---"

@@ -27,7 +27,7 @@ const TenderWidget = () => {
   } = useAgentSdkAction();
   Logger.info("stage-->", { currentStage, pageLoading, coinFetching });
   return (
-    <div className="ta:mx-auto ta:flex ta:w-full ta:flex-col ta:gap-6 ta:bg-white ta:rounded-2xl ta:border ta:border-[#EAECF0] ta:gap-4 ta:text-black ta:items-start">
+    <div className="ta:mx-auto ta:flex ta:w-full ta:h-full ta:flex-col ta:bg-white ta:rounded-2xl ta:border ta:border-[#EAECF0] ta:text-black ta:items-start">
       {pageLoading ? 
         <TenderSpinner /> 
         :
@@ -56,6 +56,7 @@ const TenderWidget = () => {
           loading={paymentData.loading}
           cancelPayment={paymentData.cancelPayment}
           confirmPayment={paymentData.confirmPayment}
+          expirePayment={paymentData.expirePayment}
           balance={paymentData.balance}
           status={paymentData.status}
           excess={paymentData.excess}

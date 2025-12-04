@@ -114,6 +114,7 @@ const PAYMENT_ICONS ={
 interface paymentDetailsProps {
   cancelPayment: () => void;
   confirmPayment: () => void;
+  expirePayment: () => void;
 }
 
 enum PAYMENT_STAGE {
@@ -191,6 +192,7 @@ interface ConfigContextType {
   fiatCurrency: string; // required currency to make payment
   env: TenderEnvironments; // required environment for sdk
   confirmationInterval?: number //optional defaults to 5000ms
+  paymentExpirySeconds?: number // optional expiry for payment countdown, defaults to 30 mins
   theme?: "light" | "dark"; // light or dark 
   onEventResponse?:(data:onFinishResponse) => void;
 }
@@ -202,6 +204,7 @@ interface TenderAgentProps {
   accessId: string;
   accessSecret: string;
   env: TenderEnvironments;
+  paymentExpirySeconds?: number;
   onEventResponse?: (data:onFinishResponse)=> void;
 }
 

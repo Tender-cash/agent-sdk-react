@@ -94,8 +94,9 @@ function App() {
             fiatCurrency={fiatCurrency}
             env="test"
             onEventResponse={handleEventResponse}
+            referenceId={Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)}
           />
-          <button onClick={() => setShowSdk(false)} style={{ marginTop: '10px' }}>
+          <button className='main-btn' onClick={() => setShowSdk(false)} style={{ marginTop: '10px' }}>
             Cancel / Close SDK Manually
           </button>
         </div>

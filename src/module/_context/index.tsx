@@ -54,7 +54,7 @@ const ConfigProvider: React.FC<ConfigProviderProps> = ({
         client: getAxiosInstance(),
         CONFIRM_INTERVAL: config.confirmationInterval || DEFAULT_CONFIRM_INTERVAL,
       }}>
-        <div className="ta:relative ta:mx-auto ta:flex ta:flex-col ta:gap-6 ta:bg-white ta:rounded-2xl ta:border ta:border-[#EAECF0] ta:gap-4 ta:w-[600px] ta:items-start">
+        <div className="ta:relative ta:mx-auto ta:flex ta:flex-col ta:gap-2 ta:bg-white ta:rounded-2xl ta:border ta:border-[#EAECF0] ta:w-[600px] ta:h-[600px] ta:items-start">
           {!isLoading ? 
           <TenderSpinner />
           : 

@@ -24,7 +24,7 @@ const useAgentSdkAction = () => {
   const [pageLoading, setPageLoading] = useState<boolean>(true);
   const [coinFetching, setCoinFetching] = useState<boolean>(false);
 
-  const { paymentDetails, isFetching, initiatePayment, confirmPayment, cancelPayment, paymentError } = fetchPaymentDetailAction({ nextScreen:setStage, setPageLoading });
+  const { paymentDetails, isFetching, initiatePayment, confirmPayment, cancelPayment, expirePayment, paymentError } = fetchPaymentDetailAction({ nextScreen:setStage, setPageLoading });
 
   const fetchChains = async () => {
     const chainsDF = await client?.get(`${URL_PATHS.CHAINS}`) as APIResponse<PaymentChainResponse>
@@ -67,13 +67,14 @@ const useAgentSdkAction = () => {
     });
   }
 
-  const paymentData:IPaymentData & { cancelPayment:()=>void, confirmPayment: ()=>void, disabled: boolean, loading: boolean } = useMemo(()=>({
+  const paymentData:IPaymentData & { cancelPayment:()=>void, confirmPayment: ()=>void, expirePayment: ()=>void, disabled: boolean, loading: boolean } = useMemo(()=>({
     ...paymentDetails,
     disabled: isFetching,
     loading: isFetching,
     cancelPayment,
-    confirmPayment
-  }),[paymentDetails, isFetching, confirmPayment, confirmPayment, setStage, setPageLoading]);
+    confirmPayment,
+    expirePayment
+  }),[paymentDetails, isFetching, confirmPayment, cancelPayment, expirePayment, setStage, setPageLoading]);
 
   return useMemo(()=>({
     currentStage:stage,

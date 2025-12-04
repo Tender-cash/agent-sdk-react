@@ -15,7 +15,7 @@ const InfoScreen = ({
             icon={tenderIcon}
         />
 
-        <div className="ta:flex ta:flex-col ta:p-4 ta:gap-2 ta:justify-center ta:items-center ta:w-full ta:min-h-[250px] ta:text-2xl ta:text-secondary ta:text-center ta:w-[70%] ta:mx-auto">
+        <div className="ta:flex ta:flex-col ta:p-4 ta:gap-2 ta:justify-center ta:items-center ta:min-h-[350px] ta:text-2xl ta:text-secondary ta:text-center ta:w-[60%] ta:mx-auto">
             <X size={60} className={"ta:text-danger"} />
             <p className="">{message}</p>
         </div>

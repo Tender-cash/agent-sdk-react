@@ -13,7 +13,6 @@ import { URL_PATHS } from "../lib/utils";
 import { APIResponse } from "../types";
 import ApiRequestQueue from "../lib/queue";
 import Logger from "../lib/logger";
-import { toast } from "../_components";
 
 const confirmPaymentQueue = new ApiRequestQueue();
 
@@ -101,15 +100,22 @@ const fetchPaymentDetailAction = ({ nextScreen, setPageLoading }: { nextScreen:(
     interval = setInterval(()=>CallConfirmPayment(id, true), CONFIRM_INTERVAL)
   };
 
-  const triggerPaymentConfirm = (isCancelled?:boolean) => {
+  const triggerPaymentConfirm = (reason?: "cancelled" | "expired") => {
     setIsFetching(true);
-    if (isCancelled ) {
+    if (reason ) {
       // make api request to cancel and close all confirmation queues
-      Logger.debug("canceling-payment....");
+      const isExpired = reason === "expired";
+      Logger.debug(isExpired ? "expiring-payment...." : "canceling-payment....");
       confirmPaymentQueue.clearQueue();
-      onEventResponse && onEventResponse({ status: "error", message: "user cancelled transaction", data: {...paymentDetails, status: "cancelled"} });
+      const status: PaymentStatusProps = "cancelled";
+      const title = isExpired ? "Payment Expired" : "User Cancelled Payment";
+      const message = isExpired
+        ? "Your payment window has expired. Please initiate a new payment."
+        : "You've cancelled the payment request. Please try again.";
+
+      onEventResponse && onEventResponse({ status, message, data: {...paymentDetails, status} });
       setIsFetching(false);
-      setPaymentError({title: "User Cancelled Payment", message: "You've cancelled the payment request. Please try again.", data: {...paymentDetails, status: "cancelled"}});
+      setPaymentError({title, message, data: {...paymentDetails, status} });
       confirmPaymentQueue.clearQueue();
       return nextScreen(PAYMENT_STAGE.INFO);
     }
@@ -123,8 +129,9 @@ const fetchPaymentDetailAction = ({ nextScreen, setPageLoading }: { nextScreen:(
     isFetching,
     initiatePayment,
     paymentError,
-    confirmPayment: ()=>triggerPaymentConfirm(false),
-    cancelPayment: ()=>triggerPaymentConfirm(true),
+    confirmPayment: ()=>triggerPaymentConfirm(undefined),
+    cancelPayment: ()=>triggerPaymentConfirm("cancelled"),
+    expirePayment: ()=>triggerPaymentConfirm("expired"),
   }),[paymentDetails, isFetching, initiatePayment, triggerPaymentConfirm, paymentError]);
 };
 

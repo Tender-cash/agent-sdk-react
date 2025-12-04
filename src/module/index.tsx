@@ -6,7 +6,7 @@ import { ConfigProvider } from "./_context";
 import TenderWidget from "./screens";
 import { TenderAgentProps } from "./types";
 
-const TenderAgentSdk = ({ referenceId, amount, accessId, accessSecret, env, fiatCurrency, onEventResponse }:TenderAgentProps) => {
+const TenderAgentSdk = ({ referenceId, amount, accessId, accessSecret, env, fiatCurrency, paymentExpirySeconds, onEventResponse }:TenderAgentProps) => {
   return (
     <div className="tender-cash-agent-sdk">
       <ConfigProvider
@@ -17,6 +17,7 @@ const TenderAgentSdk = ({ referenceId, amount, accessId, accessSecret, env, fiat
           amount,
           fiatCurrency,
           env,
+          paymentExpirySeconds,
           onEventResponse
         }}
       >

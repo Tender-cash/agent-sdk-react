@@ -2,7 +2,7 @@ import { ITheme } from "../module/types";
 
 const defaultTheme: ITheme = {
   primary: "#101828",
-  secondary: "#C7C7C7",
+  secondary: "#667085",
   "secondary-body": "#FAFAFA",
   info: "#17A2B8",
   warning: "#F2C94C",
