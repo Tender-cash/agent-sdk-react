@@ -91,6 +91,8 @@ interface paymentResponseProps {
   status?: PaymentStatusProps;
   balance?: string;
   excess?: string;
+  coinIcon?: string;
+  chainIcon?: string;
 }
 
 enum PAYMENT_RESPONSES {

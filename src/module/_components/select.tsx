@@ -4,6 +4,7 @@
 /*                             External Dependency                            */
 /* -------------------------------------------------------------------------- */
 import React, { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Check, ChevronDown } from "lucide-react";
 
 /* -------------------------------------------------------------------------- */
@@ -38,7 +39,9 @@ export const SelectDropdown = ({
 	const [isOpen, setIsOpen] = useState(false);
 	const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null);
 	const [shouldOpenUp, setShouldOpenUp] = useState(false);
+	const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0, width: 0 });
 	const selectRef = useRef<HTMLDivElement | null>(null);
+	const dropdownRef = useRef<HTMLUListElement | null>(null);
 
 	const toggleDropdown = () => {
 		if (!disabled) {
@@ -78,30 +81,62 @@ export const SelectDropdown = ({
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
-			if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
+			if (
+				selectRef.current && 
+				!selectRef.current.contains(event.target as Node) &&
+				dropdownRef.current &&
+				!dropdownRef.current.contains(event.target as Node)
+			) {
 				closeDropdown();
 			}
 		};
 
-		document.addEventListener("mousedown", handleClickOutside);
+		if (isOpen) {
+			document.addEventListener("mousedown", handleClickOutside);
+		}
 		return () => {
 			document.removeEventListener("mousedown", handleClickOutside);
 		};
-	}, []);
+	}, [isOpen]);
 
-	useEffect(() => {
-		if (isOpen && selectRef.current) {
+	const updateDropdownPosition = () => {
+		if (selectRef.current) {
 			const rect = selectRef.current.getBoundingClientRect();
 			const viewportHeight = window.innerHeight;
 			const dropdownHeight = 200; // Approximate height of the dropdown content
-			setShouldOpenUp(rect.bottom + dropdownHeight > viewportHeight);
+			const willOpenUp = rect.bottom + dropdownHeight > viewportHeight;
+			setShouldOpenUp(willOpenUp);
+			
+			// Calculate position for portal
+			setDropdownPosition({
+				top: willOpenUp ? rect.top - dropdownHeight : rect.bottom + 8,
+				left: rect.left,
+				width: rect.width,
+			});
+		}
+	};
+
+	useEffect(() => {
+		if (isOpen) {
+			updateDropdownPosition();
+			
+			const handleScroll = () => updateDropdownPosition();
+			const handleResize = () => updateDropdownPosition();
+			
+			window.addEventListener('scroll', handleScroll, true);
+			window.addEventListener('resize', handleResize);
+			
+			return () => {
+				window.removeEventListener('scroll', handleScroll, true);
+				window.removeEventListener('resize', handleResize);
+			};
 		}
 	}, [isOpen]);
 
 	return (
 		<div ref={selectRef} className={`ta:relative ta:w-full sm:ta:w-fit ${className}`} tabIndex={0} onKeyDown={handleKeyDown}>
 			<button
-				className={`ta:flex ta:items-center ta:justify-between ta:rounded-lg !ta:border ta:border-[0.1px] ta:px-3 ta:py-2 ta:text-sm ta:text-black ${triggerClassName} ${disabled ? "ta:cursor-not-allowed ta:opacity-50" : "ta:cursor-pointer"} ${isOpen ? "!ta:bg-white" : "!ta:bg-white/10"}`}
+				className={`ta:flex ta:items-center ta:justify-between ta:rounded-lg !ta:border ta:border-[0.1px] ta:px-3 ta:py-2 ta:text-sm ta:text-black ta:min-h-[44px] ta:touch-manipulation ${triggerClassName} ${disabled ? "ta:cursor-not-allowed ta:opacity-50" : "ta:cursor-pointer"} ${isOpen ? "!ta:bg-white" : "!ta:bg-white/10"}`}
 				onClick={toggleDropdown}
 				disabled={disabled}
 				type="button"
@@ -110,17 +145,23 @@ export const SelectDropdown = ({
 				<span className="ta:flex ta:flex-row ta:gap-2">{loading ?  <Spinner size={15} /> : <ChevronDown size={15} />}</span>
 			</button>
 
-			{isOpen && (
+			{isOpen && typeof document !== 'undefined' && createPortal(
 				<ul
-					className={`ta:transparent_style ta:absolute ta:z-10 ta:mt-2 ta:h-fit ta:max-h-40 ta:w-full ta:overflow-y-auto ta:overflow-x-hidden ta:rounded-lg ta:border ta:border-black/10 ta:shadow-lg
-					ta:backdrop-blur-lg ${shouldOpenUp ? "ta:bottom-full mb-2" : "ta:top-full ta:mt-2"} ${dropdownClassName}`}
+					ref={dropdownRef}
+					className={`ta:fixed ta:z-[99999] ta:h-fit ta:max-h-40 ta:overflow-y-auto ta:overflow-x-hidden ta:rounded-lg ta:border ta:border-[#E6E6E6] ta:shadow-xl ta:max-w-[calc(100vw-2rem)] sm:ta:max-w-none ta:bg-white ta:text-black ${dropdownClassName}`}
 					role="listbox"
+					style={{ 
+						top: `${dropdownPosition.top}px`,
+						left: `${dropdownPosition.left}px`,
+						width: `${dropdownPosition.width}px`,
+						zIndex: 99999
+					}}
 				>
 					{options.map((option: Option, index) => (
 						<li
 							key={option.value}
-							className={`ta:relative ta:flex ta:cursor-pointer ta:items-center ta:rounded ta:p-2 ta:px-4 ta:py-2 ta:text-base ta:outline-none hover:ta:bg-white/20
-							${highlightedIndex === index || option.label === value?.label ? "ta:bg-white/20" : ""}`}
+							className={`ta:relative ta:flex ta:cursor-pointer ta:items-center ta:rounded ta:p-3 ta:px-4 ta:py-3 ta:text-base ta:outline-none ta:min-h-[44px] ta:touch-manipulation hover:ta:bg-gray-100
+							${highlightedIndex === index || option.label === value?.label ? "ta:bg-gray-100" : "ta:bg-white"}`}
 							onClick={() => handleOptionSelect(option)}
 							onMouseEnter={() => setHighlightedIndex(index)}
 							role="option"
@@ -134,7 +175,8 @@ export const SelectDropdown = ({
 							)}
 						</li>
 					))}
-				</ul>
+				</ul>,
+				document.body
 			)}
 		</div>
 	);

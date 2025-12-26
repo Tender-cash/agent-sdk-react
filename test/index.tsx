@@ -14,9 +14,9 @@ const App = () => {
         amount={10}
         referenceId={"123456790-090-safsasf-12fg"}
         fiatCurrency={"ngn"}
-        accessId="RlQwBRgwFBAZ7mN8SiDVqkcs8OTlMjRvTKEX2T1AJAsFPuF97Hlu"
-        accessSecret="fXARyx8qPkT49QXB9WyeUZJ1LjA9M9G6r9x0gWS5vUgHP8EMODN4"
-        env="test"
+        accessId="i0abrAVqbbntMGi2C8dCW1DqsatwBg4yfkGctW3w0F5KZZHBFNqo"
+        accessSecret="dLAQ5U9ba71vQseaiyG9bqAEEgq6FU1mMGcOGNFcFItzhcQimm5C"
+        env="live"
         onEventResponse={OnFinishedResponse}
       />
     </>

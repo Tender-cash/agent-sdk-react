@@ -10,7 +10,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "../lib/utils";
 
 const button = cva(
-    "ta:focus:outline-none ta:py-3 ta:whitespace-nowrap ta:duration-200 ta:capitalize ta:focus-visible:ring-1 ta:focus-visible:ring-[#19A966] ta:relative ta:z-0 ta:rounded-[10px] ta:text-center ta:w-fit ta:px-6 ta:font-semibold ta:focus-visible:border-transparent ta:cursor-pointer",
+    "ta:focus:outline-none ta:py-3 ta:whitespace-nowrap ta:duration-200 ta:capitalize ta:focus-visible:ring-1 ta:focus-visible:ring-[#19A966] ta:relative ta:z-0 ta:rounded-[10px] ta:text-center ta:w-fit ta:px-6 ta:font-semibold ta:focus-visible:border-transparent ta:cursor-pointer ta:min-h-[44px] ta:touch-manipulation",
     {
         variants: {
             variant: {

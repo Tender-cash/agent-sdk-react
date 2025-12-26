@@ -47,9 +47,9 @@ const PaymentForm = ({
             />
 
             <FormBody>
-                <div className="ta:flex ta:flex-row ta:bg-[#FAFAFA] ta:w-full ta:justify-between ta:p-4 ta:border-[#EAECF0]">
+                <div className="ta:flex ta:flex-row ta:flex-col sm:ta:flex-row ta:bg-[#FAFAFA] ta:w-full ta:justify-between ta:items-center sm:ta:items-start ta:gap-2 sm:ta:gap-0 ta:p-4 ta:border-[#EAECF0]">
                     <h3 className="ta:text-base ta:font-bold">Total</h3>
-                    <p className="ta:text-2xl ta:font-bold">
+                    <p className="ta:text-xl sm:ta:text-2xl ta:font-bold">
                         {amount} {fiatCurrency.toUpperCase()}{" "}
                     </p>
                 </div>
@@ -83,9 +83,9 @@ const PaymentForm = ({
                 </div>
             </FormBody>
 
-            <div className="ta:flex ta:h-full ta:gap-2 ta:justify-center ta:items-center ta:bg-[#FAFAFA] ta:p-6 ta:w-full ta:bottom-0 ta:rounded-b-2xl">
+            <div className="ta:flex ta:h-full ta:gap-2 ta:justify-center ta:items-center ta:bg-[#FAFAFA] ta:p-4 sm:ta:p-6 ta:w-full ta:bottom-0 ta:rounded-b-2xl">
                 <Button
-                    className="ta:block ta:p-2 ta:bg-black ta:text-white ta:rounded-lg ta:min-w-[280px]"
+                    className="ta:block ta:p-3 sm:ta:p-2 ta:bg-black ta:text-white ta:rounded-lg ta:w-full sm:ta:min-w-[280px] ta:min-h-[44px]"
                     type="button"
                     disabled={formLoading || formDisabled}
                     onClick={() => (formLoading ? null : submitForm())}

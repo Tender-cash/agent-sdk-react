@@ -54,7 +54,7 @@ const ConfigProvider: React.FC<ConfigProviderProps> = ({
         client: getAxiosInstance(),
         CONFIRM_INTERVAL: config.confirmationInterval || DEFAULT_CONFIRM_INTERVAL,
       }}>
-        <div className="ta:relative ta:mx-auto ta:flex ta:flex-col ta:gap-2 ta:bg-white ta:rounded-2xl ta:border ta:border-[#EAECF0] ta:w-[600px] ta:h-[600px] ta:items-start">
+        <div className="ta:relative ta:mx-auto ta:flex ta:flex-col ta:gap-2 ta:bg-white ta:rounded-lg sm:ta:rounded-2xl ta:border ta:border-[#EAECF0] ta:w-full ta:max-w-[600px] ta:min-h-[400px] sm:ta:h-[600px] ta:items-start ta:overflow-hidden">
           {!isLoading ? 
           <TenderSpinner />
           : 
@@ -62,9 +62,9 @@ const ConfigProvider: React.FC<ConfigProviderProps> = ({
           }
         </div>
         <Toaster
-            position="top-right"
+            position="top-center"
             gutter={8}
-            containerClassName="!ta:p-0 !ta:m-0 !ta:z-[999999]"
+            containerClassName="!ta:p-0 !ta:m-0 !ta:z-[999999] sm:!ta:top-right"
         />
       </ConfigContext.Provider>
   );
