@@ -72,28 +72,24 @@ const RenderPendingDetails = ({
     return (
         <>
             <FormHeader
-                title="Payment Details"
-                description="Copy and paste payout wallet to complete your purchase."
+                title="Payement Details"
+                description="Complete your purchase by making the deposit amount to the wallet address below."
+                className="ta:px-6 ta:pt-8"
             />
 
-            <FormBody>
+            <FormBody
+                className="ta:px-6"
+            >
                 <div className="ta:gap-1 ta:flex ta:w-full ta:flex-col ta:px-6">
                     <div className="ta:flex ta:flex-col ta:items-center ta:justify-center ta:p-4">
-                        <p className="ta:text-xs sm:ta:text-sm">YOU'RE PAYING</p>
-                        <div className="ta:flex ta:flex-row ta:gap-2 ta:items-baseline">
-                            <span className="ta:text-3xl sm:ta:text-[48px] ta:font-bold ta:leading-tight">
+                        <div className="ta:flex ta:flex-row ta:gap-2 ta:items-baseline ta:justify-center ta:items-center">
+                            <span className="ta:text-5xl ta:font-bold ta:leading-tight">
                                 {amount}
                             </span>
-                            <span className="ta:mb-0 sm:ta:mb-4 ta:mt-auto ta:text-base sm:ta:text-xl ta:font-bold ta:text-secondary">
+                            <span className="ta:my-auto ta:text-base sm:ta:text-4xl ta:font-bold">
                                 {coin?.toUpperCase()}
                             </span>
                         </div>
-                        <p className="ta:mt-2 ta:text-xs sm:ta:text-sm ta:text-primary">
-                            Payment expires in{" "}
-                            <span className="ta:font-mono">
-                                {minutes}:{seconds}
-                            </span>
-                        </p>
                     </div>
                     <div className="ta:w-max-full ta:flex ta:flex-col ta:flex-row ta:justify-between ta:gap-4 ta:text-wrap ta:rounded-2xl ta:border ta:border-dashed ta:border-[#E6E6E6] ta:bg-[#FAFAFA] ta:p-4">
                         <div className="ta:flex ta:w-full sm:ta:w-1/4 ta:flex-row ta:justify-center sm:ta:justify-start">
@@ -109,40 +105,46 @@ const RenderPendingDetails = ({
                                 logoImage={coinIcon || chainIcon}
                             />
                         </div>
-                        <div className="ta:my-auto ta:flex ta:w-full sm:ta:w-2/4 ta:flex-col ta:text-pretty ta:gap-2">
+                        <div className="ta:my-auto ta:flex ta:w-full sm:ta:w-2/4 ta:flex-col ta:text-pretty ta:gap-4">
                             <h3 className="ta:text-sm sm:ta:text-base ta:text-secondary">
                                 {coin.toUpperCase()} Deposit Address
                             </h3>
-                            <p className="ta:break-all ta:text-xs sm:ta:text-[13px] ta:underline ta:underline-offset-4">
+                            <p className="ta:break-all ta:text-sm sm:ta:text-[14px] ta:underline ta:underline-offset-4">
                                 {address}
                             </p>
-                        </div>
-                        <div className="ta:my-auto ta:flex ta:w-full sm:ta:w-1/4 ta:flex-row ta:justify-center sm:ta:justify-end">
-                            <Button
-                                className="ta:flex-row ta:rounded-2xl !ta:border-[#D0D5DD] !ta:bg-white !ta:px-3 !ta:py-2 ta:min-h-[44px] ta:w-full sm:ta:w-auto"
-                                variant="outline"
+                            <button
+                                className="ta:flex-row !ta:rounded-2xl !ta:border-[#D0D5DD] ta:bg-[#FFFFFF] ta:p-2 ta:w-[64px] ta:cursor-pointer ta:rounded-lg ta:shadow-sm ta:shadow-[#0000000D]"
                                 onClick={() => copy(address)}
                             >
                                 <span className="ta:flex ta:flex-row ta:items-center ta:justify-center ta:gap-1 ta:text-xs sm:ta:text-[14px] ta:font-medium ta:text-[#344054]">
                                     <Copy size={16} className="sm:ta:w-[18px] sm:ta:h-[18px]" />
                                     <span>Copy</span>
                                 </span>
-                            </Button>
+                            </button>
                         </div>
+                        {/* <div className="ta:my-auto ta:flex ta:w-full sm:ta:w-1/4 ta:flex-row ta:justify-center sm:ta:justify-end">
+                        </div> */}
                     </div>
-                    <div className="ta:my-4 ta:text-[14px] ta:text-secondary">
+                    <div className="ta:my-4 ta:text-sm ta:text-secondary font-inter">
                         <p>
                             Send only <strong>{coin.toUpperCase()}</strong> to this deposit
                             address - supports only <strong>{coin.toUpperCase()}</strong> tokens on <strong>{chain.toUpperCase()}</strong>{" "}
                             network. If you send wrong tokens, they'll be lost.
                         </p>
                     </div>
+                    <div className="ta:text-sm ta:text-secondary ta:mx-auto">
+                        <p>
+                            This Payment will expire in <span className="ta:font-bold ta:text-[#079455]">{minutes}m {seconds}s</span>
+                        </p>
+                    </div>
                 </div>
             </FormBody>
 
-            <FormFooter>
+            <FormFooter
+                className="ta:p-6"
+            >
                 {loading ? (
-                    <div className="ta:flex ta:w-full ta:flex-row ta:items-center ta:gap-4">
+                    <div className="ta:flex ta:w-full ta:flex-row ta:items-center ta:gap-4 ta:justify-center">
                         <span>
                             <Spinner size={16} />{" "}
                         </span>
@@ -152,15 +154,6 @@ const RenderPendingDetails = ({
                     </div>
                 ) : (
                     <>
-                        <Button
-                            className="ta:block ta:min-w-[60px] ta:min-h-[44px] ta:rounded-lg !ta:border !ta:border-[#D0D5DD] ta:bg-transparent ta:p-2 sm:ta:p-2 !ta:text-black !ta:bg-transparent ta:flex-1 sm:ta:flex-none"
-                            type="button"
-                            variant="outline"
-                            disabled={loading}
-                            onClick={() => (loading ? null : cancelPayment())}
-                        >
-                            {loading ? <Spinner size={16} /> : "Cancel"}
-                        </Button>
                         <Button
                             className="ta:block ta:min-w-[60px] ta:min-h-[44px] ta:rounded-lg ta:bg-black ta:p-2 sm:ta:p-2 ta:text-white ta:flex-1 sm:ta:flex-none"
                             type="button"
@@ -287,7 +280,7 @@ const RenderFinishedDetails = ({
                             <Spinner size={16} />{" "}
                         </span>
                         <span className="ta:text-sm ta:text-secondary">
-                            Transaction is pending ...
+                            Received partial payment, expecting {balance} {coin.toUpperCase()} more
                         </span>
                     </div>
                 ) : (

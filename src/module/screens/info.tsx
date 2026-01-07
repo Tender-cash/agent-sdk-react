@@ -13,6 +13,7 @@ const InfoScreen = ({
             title={title}
             description={message}
             icon={tenderIcon}
+            className="ta:px-6 ta:pt-8"
         />
 
         <div className="ta:flex ta:flex-col ta:p-4 ta:gap-2 ta:justify-center ta:items-center ta:min-h-[250px] sm:ta:min-h-[350px] ta:text-lg sm:ta:text-2xl ta:text-secondary ta:text-center ta:w-full sm:ta:w-[60%] ta:mx-auto">

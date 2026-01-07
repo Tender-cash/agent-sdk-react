@@ -12,6 +12,7 @@ import { Check, ChevronDown } from "lucide-react";
 /* -------------------------------------------------------------------------- */
 import { Option } from "../types";
 import { Spinner } from "./loader";
+import { cn } from "../lib/utils";
 
 interface SelectProps {
 	options: Option[];
@@ -136,13 +137,18 @@ export const SelectDropdown = ({
 	return (
 		<div ref={selectRef} className={`ta:relative ta:w-full sm:ta:w-fit ${className}`} tabIndex={0} onKeyDown={handleKeyDown}>
 			<button
-				className={`ta:flex ta:items-center ta:justify-between ta:rounded-lg !ta:border ta:border-[0.1px] ta:px-3 ta:py-2 ta:text-sm ta:text-black ta:min-h-[44px] ta:touch-manipulation ${triggerClassName} ${disabled ? "ta:cursor-not-allowed ta:opacity-50" : "ta:cursor-pointer"} ${isOpen ? "!ta:bg-white" : "!ta:bg-white/10"}`}
+				className={cn(`ta:flex ta:items-center ta:justify-between !ta:border ta:border-[0.1px] ta:px-3 ta:py-2 ta:text-sm ta:min-h-[44px] ta:touch-manipulation ${triggerClassName} ${disabled ? "ta:cursor-not-allowed ta:opacity-50" : "ta:cursor-pointer"} ${isOpen ? "!ta:bg-white" : "!ta:bg-white"}`)}
 				onClick={toggleDropdown}
 				disabled={disabled}
 				type="button"
 			>
-				<span className="ta:flex ta:flex-row ta:gap-2">{value?.icon && <img src={value.icon} className="ta:w-[20px] ta:h-[20px]" />}{value?.label || placeholder} </span>
-				<span className="ta:flex ta:flex-row ta:gap-2">{loading ?  <Spinner size={15} /> : <ChevronDown size={15} />}</span>
+				<span className="ta:flex ta:flex-row ta:items-center ta:gap-2 ta:flex-1">
+					{value?.icon && <img src={value.icon} className="ta:w-5 ta:h-5 ta:object-contain" />}
+					<span className={`ta:flex-1 ta:text-left ${value?.label ? "ta:text-[#101828]" : "ta:text-[#667085]"}`}>
+						{value?.label || placeholder}
+					</span>
+				</span>
+				<span className="ta:flex ta:flex-row ta:items-center ta:gap-2 ta:ml-2">{loading ?  <Spinner size={15} /> : <ChevronDown size={18} className="ta:text-[#667085]" />}</span>
 			</button>
 
 			{isOpen && typeof document !== 'undefined' && createPortal(
@@ -167,7 +173,10 @@ export const SelectDropdown = ({
 							role="option"
 							aria-selected={value?.value === option.value}
 						>
-              <span className="ta:flex ta:flex-row ta:gap-2">{option?.icon && <img src={option.icon} className="ta:w-[20px] ta:h-[20px]" />}{option?.label} </span>
+              <span className="ta:flex ta:flex-row ta:items-center ta:gap-2 ta:flex-1">
+								{option?.icon && <img src={option.icon} className="ta:w-5 ta:h-5 ta:object-contain" />}
+								<span>{option?.label}</span>
+							</span>
 							{option.label === value?.label && (
 								<span className="ta:absolute ta:right-3 ta:flex ta:h-3.5 ta:w-3.5 ta:items-center ta:justify-center">
 									<Check className="h-4 w-4" />

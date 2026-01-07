@@ -5,10 +5,10 @@ import {
     SelectDropdown,
     Button,
     Spinner,
-    FormHeader,
     FormBody,
+    FormHeader,
+    FormFooter,
 } from "../_components";
-import tenderIcon from "../../assets/icons/tender.svg";
 import { Option } from "../types";
 
 interface paymentFormProps {
@@ -39,61 +39,74 @@ const PaymentForm = ({
     submitForm,
 }: paymentFormProps) => {
     return (
-        <div className="ta:flex ta:flex-col ta:h-full ta:w-full ta:gap-8">
+        <>
+            {/* Logo and Header */}
             <FormHeader
                 title="Checkout Details"
                 description="Complete your purchase by selecting your preferred chain"
-                icon={tenderIcon}
+                className="ta:px-6 ta:pt-8"
             />
 
-            <FormBody>
-                <div className="ta:flex ta:flex-row ta:flex-col sm:ta:flex-row ta:bg-[#FAFAFA] ta:w-full ta:justify-between ta:items-center sm:ta:items-start ta:gap-2 sm:ta:gap-0 ta:p-4 ta:border-[#EAECF0]">
-                    <h3 className="ta:text-base ta:font-bold">Total</h3>
-                    <p className="ta:text-xl sm:ta:text-2xl ta:font-bold">
-                        {amount} {fiatCurrency.toUpperCase()}{" "}
-                    </p>
-                </div>
-                <div className="ta:flex ta:flex-col ta:p-4 ta:gap-4">
-                    <div className="ta:flex ta:flex-col ta:gap-2 ta:w-full">
-                        <label>Network / Chain</label>
-                        <SelectDropdown
-                            onChange={selectNetwork}
-                            options={networks}
-                            value={selectedNetwork}
-                            className="sm:ta:w-full"
-                            disabled={formLoading}
-                            triggerClassName="ta:w-full focus:ta:outline-none !ta:bg-transparent"
-                            placeholder="Select Network / Chain"
-                            loading={formLoading}
-                        />
+            <FormBody className="ta:px-6 bg-[#EAECF0] ta:my-0">
+                <div className="ta:flex ta:flex-col ta:items-center ta:justify-center ta:gap-6 ta:w-full">
+                    {/* Amount display box */}
+                    <div className="ta:w-full ta:bg-[#F5F5F5] ta:p-8 ta:flex ta:items-center ta:justify-center ta:border-y ta:border-[#EAECF0]">
+                        <p className="ta:text-[#667085] ta:text-3xl ta:font-bold">
+                            ${amount.toFixed(2)}
+                        </p>
                     </div>
-                    <div className="ta:flex ta:flex-col ta:gap-2 ta:w-full">
-                        <label>Select Currency</label>
-                        <SelectDropdown
-                            onChange={selectCoin}
-                            options={coins}
-                            value={selectedCoin}
-                            disabled={!selectedNetwork || formLoading}
-                            loading={formLoading}
-                            className="sm:ta:w-full"
-                            triggerClassName="ta:w-full focus:ta:outline-non !ta:bg-transparent"
-                            placeholder="Select Currency"
-                        />
+
+                    {/* Selection fields side by side */}
+                    <div className="ta:flex ta:flex-row ta:w-full">
+                        {/* Network / Chain */}
+                        <div className="ta:flex ta:flex-col ta:gap-2 ta:flex-1">
+                            <label className="ta:text-sm ta:text-[#667085] ta:font-medium">
+                                Network / Chain
+                            </label>
+                            <SelectDropdown
+                                onChange={selectNetwork}
+                                options={networks}
+                                value={selectedNetwork}
+                                className="ta:w-full"
+                                disabled={formLoading}
+                                triggerClassName="!ta:bg-white !ta:border !ta:border-[#E6E6E6] ta:rounded-l-xl ta:px-4 ta:py-3 focus:ta:outline-none hover:ta:border-[#D0D5DD] ta:justify-between ta:w-full ta:min-h-[44px]"
+                                placeholder="Select Network/Chain"
+                                loading={formLoading}
+                            />
+                        </div>
+
+                        {/* Coin/Token */}
+                        <div className="ta:flex ta:flex-col ta:gap-2 ta:flex-1">
+                            <label className="ta:text-sm ta:text-[#667085] ta:font-medium">
+                                Coin/Token
+                            </label>
+                            <SelectDropdown
+                                onChange={selectCoin}
+                                options={coins}
+                                value={selectedCoin}
+                                disabled={!selectedNetwork || formLoading}
+                                loading={formLoading}
+                                className="ta:w-full"
+                                triggerClassName="!ta:bg-white !ta:border !ta:border-[#E6E6E6] ta:rounded-r-xl ta:px-4 ta:py-3 focus:ta:outline-none hover:ta:border-[#D0D5DD] ta:justify-between ta:w-full ta:min-h-[44px]"
+                                placeholder="Select Coin/Token"
+                            />
+                        </div>
                     </div>
                 </div>
             </FormBody>
 
-            <div className="ta:flex ta:h-full ta:gap-2 ta:justify-center ta:items-center ta:bg-[#FAFAFA] ta:p-4 sm:ta:p-6 ta:w-full ta:bottom-0 ta:rounded-b-2xl">
+            {/* Continue button with purple glow */}
+            <FormFooter className="ta:flex ta:justify-center ta:items-center ta:w-full ta:p-6">
                 <Button
-                    className="ta:block ta:p-3 sm:ta:p-2 ta:bg-black ta:text-white ta:rounded-lg ta:w-full sm:ta:min-w-[280px] ta:min-h-[44px]"
+                    className="ta:block ta:bg-black ta:text-white ta:rounded-xl ta:w-full ta:min-h-[44px] ta:shadow-[0_0_20px_rgba(147,51,234,0.3)] hover:ta:shadow-[0_0_25px_rgba(147,51,234,0.4)] ta:transition-shadow"
                     type="button"
                     disabled={formLoading || formDisabled}
                     onClick={() => (formLoading ? null : submitForm())}
                 >
                     {formLoading ? <Spinner size={16} /> : "Continue"}
                 </Button>
-            </div>
-        </div>
+            </FormFooter>
+        </>
     );
 };
 

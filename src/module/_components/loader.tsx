@@ -29,7 +29,7 @@ export const TenderSpinner: FC<SpinnerProps> = ({ size = 24, className }) => {
         <img 
           src={tenderIcon}
           alt="loading---"
-          className={`ta:transition-opacity ta:duration-2000 ta:animate-[shimmer_1.5s_infinite] ta:w-[100px]`}
+          className={`ta:transition-opacity ta:duration-2000 ta:animate-[shimmer_1.5s_infinite] ta:w-[150px]`}
         />
       </div>
   );

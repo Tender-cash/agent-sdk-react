@@ -62,10 +62,12 @@ interface FormHeaderProps {
   title: string;
   description: string;
   icon?: string;
+  className?: string;
 }
 
 interface FormFooterProps {
   children: ReactNode;
+  className?: string;
 }
 
 interface IPaymentData {
