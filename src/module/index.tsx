@@ -1,4 +1,8 @@
 /* -------------------------------------------------------------------------- */
+/*                             External Dependency                            */
+/* -------------------------------------------------------------------------- */
+import { createPortal } from "react-dom";
+/* -------------------------------------------------------------------------- */
 /*                             Internal Dependency                            */
 /* -------------------------------------------------------------------------- */
 import "../styles/index.css";
@@ -8,7 +12,8 @@ import { TenderAgentProps } from "./types";
 
 const TenderAgentSdk = ({ referenceId, amount, accessId, accessSecret, env, fiatCurrency, paymentExpirySeconds, onEventResponse }:TenderAgentProps) => {
   return (
-    <div className="tender-cash-agent-sdk">
+    <div id="tender-cash-agent-sdk" className="tender-cash-agent-sdk">
+      {createPortal(
       <ConfigProvider
         config={{
           referenceId,
@@ -23,6 +28,7 @@ const TenderAgentSdk = ({ referenceId, amount, accessId, accessSecret, env, fiat
       >
         <TenderWidget />
       </ConfigProvider>
+      , document.body)}
     </div>
   )
 }
