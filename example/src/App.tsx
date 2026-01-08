@@ -77,15 +77,16 @@ function App() {
               />
             </div>
           </div>
-
-          <button onClick={handleOpenSdk} style={{ marginBottom: '20px', padding: '10px', border: '1px solid #ccc' }}>
-            Open Tender SDK
-          </button>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <button onClick={handleOpenSdk} style={{ marginBottom: '20px', padding: '10px', border: '1px solid #ccc' }}>
+              Open Tender SDK
+            </button>
+          </div>
         </div>
       )}
 
       {showSdk && (
-        <div>
+        <>
           <h2>Tender SDK Component:</h2>
           <TenderAgentSdk
             accessId={accessId}
@@ -99,7 +100,7 @@ function App() {
           <button className='main-btn' onClick={() => setShowSdk(false)} style={{ marginTop: '10px' }}>
             Cancel / Close SDK Manually
           </button>
-        </div>
+        </>
       )}
 
       {sdkResponse && (

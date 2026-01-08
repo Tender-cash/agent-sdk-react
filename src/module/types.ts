@@ -63,6 +63,7 @@ interface FormHeaderProps {
   description: string;
   icon?: string;
   className?: string;
+  isInfo?: boolean;
 }
 
 interface FormFooterProps {

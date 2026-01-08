@@ -21,6 +21,7 @@ const FormHeader = ({
     description,
     icon,
     className,
+    isInfo = false
 }: FormHeaderProps) => (
     <div
         className={cn(
@@ -30,13 +31,13 @@ const FormHeader = ({
         {/* Circular green logo with white "7" */}
         <div className="ta:w-[100px] ta:h-[100px] ta:rounded-full ta:flex ta:items-center ta:justify-center ta:mb-4">
             <img
-                src={tenderIconLogo}
+                src={icon || tenderIconLogo}
                 className="ta:w-full ta:h-full ta:object-fit"
                 alt="icon"
             />
         </div>
         {/* "Holla," text */}
-        <p className="ta:text-[#667085] ta:text-base ta:mb-1">Holla,</p>
+        {!isInfo && <p className="ta:text-[#667085] ta:text-base ta:mb-1">Holla,</p>}
         {/* "Checkout Details" heading */}
         <h2 className="ta:text-black ta:text-xl ta:font-bold ta:mb-2">
             {title}

@@ -4,8 +4,8 @@ import useAgentSdkAction from "../_actions";
 import PaymentForm from "./form";
 import PaymentDetails from "./details";
 import { TenderSpinner } from "../_components";
-import Logger from "../lib/logger";
 import InfoScreen from "./info";
+
 const TenderWidget = () => {
   const { 
     currentStage,
@@ -25,7 +25,7 @@ const TenderWidget = () => {
     coinFetching,
     paymentError,
   } = useAgentSdkAction();
-  Logger.info("stage-->", { currentStage, pageLoading, coinFetching });
+  
   return (
     <div className="ta:mx-auto ta:flex ta:w-full ta:h-full ta:flex-col ta:bg-white ta:rounded-lg sm:ta:rounded-2xl ta:border ta:border-[#EAECF0] ta:text-black ta:items-start ta:max-w-full ta:overflow-hidden ta:flex ta:flex-col ta:h-full ta:w-full ta:gap-6">
       {pageLoading ? 
@@ -67,6 +67,12 @@ const TenderWidget = () => {
           <InfoScreen 
             title={paymentError?.title}
             message={paymentError?.message}
+            dataToView={{
+              network: selectedNetwork?.label || "-",
+              coin: selectedCoin?.label || "-",
+              amount: amount.toString() || "-",
+              address: paymentData?.address || "-",
+            }}
           />
         }
         </>
