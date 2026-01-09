@@ -10,6 +10,7 @@ import {
     FormFooter,
 } from "../_components";
 import { Option } from "../types";
+import { formatCurrency } from "../lib/utils";
 
 interface paymentFormProps {
     amount: number;
@@ -52,14 +53,14 @@ const PaymentForm = ({
                     {/* Amount display box */}
                     <div className="ta:w-full ta:bg-[#F5F5F5] ta:p-8 ta:flex ta:items-center ta:justify-center ta:border-y ta:border-[#EAECF0]">
                         <p className="ta:text-[#667085] ta:text-3xl ta:font-bold">
-                            {amount.toFixed(2)} {fiatCurrency.toUpperCase()}
+                            {formatCurrency(amount, fiatCurrency)}
                         </p>
                     </div>
 
                     {/* Selection fields side by side */}
                     <div className="ta:flex ta:flex-row ta:w-full">
                         {/* Network / Chain */}
-                        <div className="ta:flex ta:flex-col ta:gap-2 ta:flex-1">
+                        <div className="ta:flex ta:flex-col ta:gap-2 ta:w-1/2">
                             <label className="ta:text-sm ta:text-[#667085] ta:font-medium">
                                 Network / Chain
                             </label>
@@ -69,14 +70,14 @@ const PaymentForm = ({
                                 value={selectedNetwork}
                                 className="ta:w-full"
                                 disabled={formLoading}
-                                triggerClassName="!ta:bg-white !ta:border !ta:border-[#E6E6E6] ta:rounded-l-xl ta:px-4 ta:py-3 focus:ta:outline-none hover:ta:border-[#D0D5DD] ta:justify-between ta:w-full ta:min-h-[44px]"
+                                triggerClassName="!ta:bg-white !ta:border !ta:border-[#E6E6E6] ta:rounded-l-xl ta:px-4 ta:py-3 focus:ta:outline-none hover:ta:border-[#D0D5DD] ta:justify-between ta:w-full ta:min-h-[44px] ta:truncate ta:overflow-hidden ta:text-ellipsis"
                                 placeholder="Select Network/Chain"
                                 loading={formLoading}
                             />
                         </div>
 
                         {/* Coin/Token */}
-                        <div className="ta:flex ta:flex-col ta:gap-2 ta:flex-1">
+                        <div className="ta:flex ta:flex-col ta:gap-2 ta:w-1/2">
                             <label className="ta:text-sm ta:text-[#667085] ta:font-medium">
                                 Coin/Token
                             </label>
@@ -86,7 +87,7 @@ const PaymentForm = ({
                                 value={selectedCoin}
                                 disabled={!selectedNetwork || formLoading}
                                 loading={formLoading}
-                                className="ta:w-full"
+                                className="ta:w-full ta:truncate ta:overflow-hidden ta:text-ellipsis"
                                 triggerClassName="!ta:bg-white !ta:border !ta:border-[#E6E6E6] ta:rounded-r-xl ta:px-4 ta:py-3 focus:ta:outline-none hover:ta:border-[#D0D5DD] ta:justify-between ta:w-full ta:min-h-[44px]"
                                 placeholder="Select Coin/Token"
                             />

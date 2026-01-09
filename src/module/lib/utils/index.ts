@@ -70,6 +70,13 @@ const sentenceCase = (str: string) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
+const formatCurrency = (amount: number, currency: string) => {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: currency,
+  }).format(amount);
+};
+
 export {
   cn,
   getRequestSignature,
@@ -78,4 +85,5 @@ export {
   TENDER_URLS,
   URL_PATHS,
   sentenceCase,
+  formatCurrency,
 }

@@ -1,7 +1,9 @@
+import { X } from "lucide-react";
 import completedIcon from "@/assets/icons/completed.svg";
 import errorIcon from "@/assets/icons/error.svg";
 import { FormHeader, FormFooter, FormBody } from "../_components/layout";
 import { Spinner } from "../_components";
+import { useConfig } from "../_context";
 
 // main response
 const InfoScreen = ({
@@ -20,16 +22,30 @@ const InfoScreen = ({
         address: string;
     };
 }) => {
-    console.log("isError--->", isError);
+    const { onClose } = useConfig();
+
     return (
         <>
-            <FormHeader
-                title={title}
-                description={message}
-                icon={isError ? errorIcon : completedIcon}
-                className="ta:px-6 ta:pt-8"
-                isInfo={true}
-            />
+            <div className="ta:relative ta:w-full">
+                {/* Close Button */}
+                {onClose && (
+                    <button
+                        onClick={onClose}
+                        className="ta:absolute ta:top-4 ta:right-4 ta:z-10 ta:flex ta:items-center ta:justify-center ta:w-10 ta:h-10 ta:rounded-full ta:bg-white ta:border ta:border-[#E6E6E6] hover:ta:bg-gray-50 ta:transition-colors ta:cursor-pointer ta:text-gray-600 hover:ta:text-gray-800 ta:shadow-sm"
+                        aria-label="Close modal"
+                        type="button"
+                    >
+                        <X size={18} />
+                    </button>
+                )}
+                <FormHeader
+                    title={title}
+                    description={message}
+                    icon={isError ? errorIcon : completedIcon}
+                    className="ta:px-6 ta:pt-8"
+                    isInfo={true}
+                />
+            </div>
 
             <FormBody className="ta:flex ta:px-6 ta:gap-2 ta:my-0 bg-[#EAECF0] ta:px-12">
                 {Object.entries(dataToView || {}).map(([key, value]) => (

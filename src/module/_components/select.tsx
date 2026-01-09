@@ -142,13 +142,13 @@ export const SelectDropdown = ({
 				disabled={disabled}
 				type="button"
 			>
-				<span className="ta:flex ta:flex-row ta:items-center ta:gap-2 ta:flex-1">
+				<span className="ta:flex ta:flex-row ta:items-center ta:gap-2 ta:w-3/4">
 					{value?.icon && <img src={value.icon} className="ta:w-5 ta:h-5 ta:object-contain" />}
-					<span className={`ta:flex-1 ta:text-left ${value?.label ? "ta:text-[#101828]" : "ta:text-[#667085]"}`}>
+					<span className={`ta:flex-1 ta:text-left ta:truncate ta:overflow-hidden ta:text-ellipsis ${value?.label ? "ta:text-[#101828]" : "ta:text-[#667085]"}`}>
 						{value?.label || placeholder}
 					</span>
 				</span>
-				<span className="ta:flex ta:flex-row ta:items-center ta:gap-2 ta:ml-2">{loading ?  <Spinner size={15} /> : <ChevronDown size={18} className="ta:text-[#667085]" />}</span>
+				<span className="ta:flex ta:flex-row ta:items-center ta:gap-2 ta:ml-2 ta:w-1/4">{loading ?  <Spinner size={15} /> : <ChevronDown size={18} className="ta:text-[#667085]" />}</span>
 			</button>
 
 			{isOpen && typeof document !== 'undefined' && createPortal(

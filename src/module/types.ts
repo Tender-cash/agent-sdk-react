@@ -200,6 +200,7 @@ interface ConfigContextType {
   paymentExpirySeconds?: number // optional expiry for payment countdown, defaults to 30 mins
   theme?: "light" | "dark"; // light or dark 
   onEventResponse?:(data:onFinishResponse) => void;
+  onClose?: () => void; // optional close handler for modal
 }
 
 interface TenderAgentProps {

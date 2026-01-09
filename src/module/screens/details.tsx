@@ -103,6 +103,8 @@ const RenderPendingDetails = ({
                                     maxHeight: "200px",
                                 }}
                                 logoImage={coinIcon || chainIcon}
+                                logoPadding={5}
+                                logoPaddingStyle="circle"
                             />
                         </div>
                         <div className="ta:my-auto ta:flex ta:w-full sm:ta:w-2/4 ta:flex-col ta:text-pretty ta:gap-4">
