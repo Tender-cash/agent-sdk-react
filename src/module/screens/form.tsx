@@ -52,7 +52,7 @@ const PaymentForm = ({
                     {/* Amount display box */}
                     <div className="ta:w-full ta:bg-[#F5F5F5] ta:p-8 ta:flex ta:items-center ta:justify-center ta:border-y ta:border-[#EAECF0]">
                         <p className="ta:text-[#667085] ta:text-3xl ta:font-bold">
-                            ${amount.toFixed(2)}
+                            {amount.toFixed(2)} {fiatCurrency.toUpperCase()}
                         </p>
                     </div>
 

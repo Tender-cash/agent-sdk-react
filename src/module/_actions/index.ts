@@ -24,7 +24,7 @@ const useAgentSdkAction = () => {
   const [pageLoading, setPageLoading] = useState<boolean>(true);
   const [coinFetching, setCoinFetching] = useState<boolean>(false);
 
-  const { paymentDetails, isFetching, initiatePayment, confirmPayment, cancelPayment, expirePayment, paymentError } = fetchPaymentDetailAction({ nextScreen:setStage, setPageLoading });
+  const { paymentDetails, isFetching, initiatePayment, confirmPayment, cancelPayment, expirePayment, paymentError, setPaymentError } = fetchPaymentDetailAction({ nextScreen:setStage, setPageLoading });
 
   const fetchChains = async () => {
     const chainsDF = await client?.get(`${URL_PATHS.CHAINS}`) as APIResponse<PaymentChainResponse>
@@ -36,6 +36,12 @@ const useAgentSdkAction = () => {
         icon: c.icon,
       })));
       setPageLoading(false);
+    } else {
+      setPaymentError({
+        title: "Error",
+        message: chainsDF.data.message || "Failed to fetch chains",
+        data: chainsDF.data,
+      });
     }
   }
 
@@ -48,6 +54,12 @@ const useAgentSdkAction = () => {
       const coinsList = coinsDF.data?.data;
       setCoins(coinsList.map(c=>({ label: c.name, value: c.id, icon: c.icon })));
       setCoinFetching(false);
+    } else {
+      setPaymentError({
+        title: "Error",
+        message: coinsDF.data.message || "Failed to fetch coins",
+        data: coinsDF.data,
+      });
     }
   }
 
@@ -55,10 +67,17 @@ const useAgentSdkAction = () => {
     fetchChains();
   },[])
 
+  // Reset formLoading when navigating away from FORM stage
+  useEffect(() => {
+    if (stage !== PAYMENT_STAGE.FORM) {
+      setFormLoading(false);
+    }
+  }, [stage]);
+
   const submitForm = async () => {
     if (!selectedCoin || !selectedNetwork) return null;
     setFormLoading(true);
-    return await initiatePayment({
+    await initiatePayment({
       amount, 
       fiatCurrency, 
       chain: selectedNetwork?.value, 
