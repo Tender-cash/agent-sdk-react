@@ -20,24 +20,26 @@ const TenderAgentSdk = ({
     paymentExpirySeconds,
     onEventResponse,
 }: TenderAgentProps) => {
-    return createPortal(
+    return (
         <div id="tender-cash-agent-sdk" className="tender-cash-agent-sdk">
-            <ConfigProvider
-                config={{
-                    referenceId,
-                    accessId,
-                    accessSecret,
-                    amount,
-                    fiatCurrency,
-                    env,
-                    paymentExpirySeconds,
-                    onEventResponse,
-                }}
-            >
-                <TenderWidget />
-            </ConfigProvider>
-        </div>,
-        document.body
+            {createPortal(
+                <ConfigProvider
+                    config={{
+                        referenceId,
+                        accessId,
+                        accessSecret,
+                        amount,
+                        fiatCurrency,
+                        env,
+                        paymentExpirySeconds,
+                        onEventResponse,
+                    }}
+                >
+                    <TenderWidget />
+                </ConfigProvider>,
+                document.getElementById("tender-cash-agent-sdk") || document.body
+            )}
+        </div>
     );
 };
 
