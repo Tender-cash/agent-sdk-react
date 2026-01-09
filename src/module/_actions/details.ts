@@ -36,7 +36,7 @@ const fetchPaymentDetailAction = ({
     >(undefined);
     const [isFetching, setIsFetching] = useState(false);
     const [paymentError, setPaymentError] = useState<
-        { title: string; message: string; data: any } | undefined
+        { title: string; message: string; data: any, isError: boolean } | undefined
     >(undefined);
 
     const initiatePayment = async ({
@@ -89,6 +89,7 @@ const fetchPaymentDetailAction = ({
                     message:
                         response.data.message || "Failed to initiate payment",
                     data: response.data,
+                    isError: true,
                 });
                 nextScreen(PAYMENT_STAGE.INFO);
             }
@@ -101,6 +102,7 @@ const fetchPaymentDetailAction = ({
                 message:
                     (error as any)?.response?.data?.message || "Failed to initiate payment",
                 data: error,
+                isError: true,
             });
             nextScreen(PAYMENT_STAGE.INFO);
         }
@@ -201,6 +203,7 @@ const fetchPaymentDetailAction = ({
                 title,
                 message,
                 data: { ...paymentDetails, status },
+                isError: true,
             });
             confirmPaymentQueue.clearQueue();
             return nextScreen(PAYMENT_STAGE.INFO);

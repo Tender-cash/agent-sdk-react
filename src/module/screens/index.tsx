@@ -67,6 +67,7 @@ const TenderWidget = () => {
           <InfoScreen 
             title={paymentError?.title}
             message={paymentError?.message}
+            isError={paymentError?.isError}
             dataToView={{
               network: selectedNetwork?.label || "-",
               coin: selectedCoin?.label || "-",

@@ -1,5 +1,5 @@
 import completedIcon from "@/assets/icons/completed.svg";
-import tenderIcon from "@/assets/icons/tender.svg";
+import errorIcon from "@/assets/icons/error.svg";
 import { FormHeader, FormFooter, FormBody } from "../_components/layout";
 import { Spinner } from "../_components";
 
@@ -8,9 +8,11 @@ const InfoScreen = ({
     title = "An Error Occured",
     message = "An error occurred while processing your payment. Please try again.",
     dataToView,
+    isError = false,
 }: {
     title?: string;
     message?: string;
+    isError?: boolean;
     dataToView?: {
         network: string;
         coin: string;
@@ -18,12 +20,13 @@ const InfoScreen = ({
         address: string;
     };
 }) => {
+    console.log("isError--->", isError);
     return (
         <>
             <FormHeader
                 title={title}
                 description={message}
-                icon={title == "An Error Occured" ? tenderIcon : completedIcon}
+                icon={isError ? errorIcon : completedIcon}
                 className="ta:px-6 ta:pt-8"
                 isInfo={true}
             />
@@ -34,7 +37,7 @@ const InfoScreen = ({
                     <p className="ta:text-sm sm:ta:text-base ta:font-bold">
                         {key.charAt(0).toUpperCase() + key.slice(1)}:
                     </p>
-                    <p className="ta:text-sm sm:ta:text-base">{value.length > 10 ? value.slice(0, 6) + "..." + value.slice(-6) : value}</p>
+                    <p className="ta:text-sm sm:ta:text-base">{key.charAt(0).toUpperCase() + key.slice(1) == "address" ? value.length > 10 ? value.slice(0, 6) + "..." + value.slice(-6) : value : value}</p>
                 </div>
                 ))}
             </FormBody>

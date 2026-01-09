@@ -19,7 +19,7 @@ const FormFooter = ({ children, className }: FormFooterProps) => (
 const FormHeader = ({
     title,
     description,
-    icon,
+    icon = tenderIconLogo,
     className,
     isInfo = false
 }: FormHeaderProps) => (
@@ -31,7 +31,7 @@ const FormHeader = ({
         {/* Circular green logo with white "7" */}
         <div className="ta:w-[100px] ta:h-[100px] ta:rounded-full ta:flex ta:items-center ta:justify-center ta:mb-4">
             <img
-                src={icon || tenderIconLogo}
+                src={icon}
                 className="ta:w-full ta:h-full ta:object-fit"
                 alt="icon"
             />

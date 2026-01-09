@@ -41,6 +41,7 @@ const useAgentSdkAction = () => {
         title: "Error",
         message: chainsDF.data.message || "Failed to fetch chains",
         data: chainsDF.data,
+        isError: true,
       });
     }
   }
@@ -59,6 +60,7 @@ const useAgentSdkAction = () => {
         title: "Error",
         message: coinsDF.data.message || "Failed to fetch coins",
         data: coinsDF.data,
+        isError: true,
       });
     }
   }
