@@ -107,7 +107,7 @@ function App() {
       <TenderAgentSdk
         accessId={accessId}
         fiatCurrency={fiatCurrency}
-        env="local"
+        env="test"
         ref={tenderRef}
         onEventResponse={handleEventResponse}
       />
