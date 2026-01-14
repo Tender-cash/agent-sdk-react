@@ -27,12 +27,6 @@ import '@tender-cash/agent-sdk-react/dist/style.css';
 
 ## Usage
 
-There are two ways to use the Tender Cash SDK:
-1. Using the `TenderAgentSdk` component with a ref (recommended)
-2. Rendering the `TenderAgentSdk` component directly (legacy approach)
-
-### Method 1: Using `TenderAgentSdk` Component with Ref (Recommended)
-
 For more control over the modal, use the `TenderAgentSdk` component with a ref. This allows you to programmatically initiate and dismiss the payment modal.
 
 ```jsx
@@ -46,6 +40,7 @@ function PaymentComponent() {
   // --- Static Configuration ---
   const accessId = 'YOUR_ACCESS_ID'; // Replace with your actual Access ID
   const fiatCurrency = 'USD'; // Currency code
+  const environment = 'test'; // 'test' or 'live'
 
   const handleEventResponse = (response: onFinishResponse) => {
     console.log('SDK Response:', response);
@@ -56,7 +51,6 @@ function PaymentComponent() {
     tenderRef.current?.initiatePayment({
       amount: 150.00,
       referenceId: 'unique-payment-reference-123',
-      env: 'test',
       paymentExpirySeconds: 1800,
     });
   };
@@ -78,77 +72,9 @@ function PaymentComponent() {
         ref={tenderRef}
         accessId={accessId}
         fiatCurrency={fiatCurrency}
+        env={environment}
         onEventResponse={handleEventResponse}
       />
-    </div>
-  );
-}
-
-export default PaymentComponent;
-```
-
-### Method 3: Using `TenderAgentSdk` Component Directly (Legacy)
-
-Alternatively, you can render the `TenderAgentSdk` component directly within your React application using conditional rendering.
-
-```jsx
-import React, { useState } from 'react';
-import '@tender-cash/agent-sdk-react/dist/style.css'; // Don't forget styles!
-import { TenderAgentSdk, onFinishResponse } from '@tender-cash/agent-sdk-react';
-
-function PaymentComponent() {
-  const [showSdk, setShowSdk] = useState(false);
-  const [sdkResponse, setSdkResponse] = useState<onFinishResponse | null>(null);
-
-  // --- Configuration ---
-  const accessId = 'YOUR_ACCESS_ID'; // Replace with your actual Access ID
-  const amount = 150.00; // Amount to charge
-  const fiatCurrency = 'USD'; // Currency code
-  const environment = 'test'; // 'test' or 'live'
-  const referenceId = 'unique-payment-reference-123'; // Unique reference for this payment
-
-  const handlePaymentRequest = () => {
-    setSdkResponse(null);
-    setShowSdk(true);
-  };
-
-  const handleEventResponse = (response: onFinishResponse) => {
-    console.log('SDK Response:', response);
-    setSdkResponse(response);
-    setShowSdk(false); // Hide the component after response
-    // Handle success, partial payment, overpayment, error based on response.status
-  };
-
-  return (
-    <div>
-      {!showSdk && (
-        <button onClick={handlePaymentRequest}>
-          Pay ${amount.toFixed(2)} {fiatCurrency}
-        </button>
-      )}
-
-      {showSdk && (
-        <div>
-          <TenderAgentSdk
-            accessId={accessId}
-            amount={amount}
-            fiatCurrency={fiatCurrency}
-            referenceId={referenceId}
-            env={environment}
-            onEventResponse={handleEventResponse}
-          />
-          <button onClick={() => setShowSdk(false)}>Cancel Payment</button>
-        </div>
-      )}
-
-      {sdkResponse && (
-        <div>
-          <h3>Payment Result:</h3>
-          <p>Status: {sdkResponse.status}</p>
-          <p>Message: {sdkResponse.message}</p>
-          {sdkResponse.data && <pre>{JSON.stringify(sdkResponse.data, null, 2)}</pre>}
-        </div>
-      )}
     </div>
   );
 }
@@ -180,7 +106,6 @@ const tenderRef = useRef<TenderAgentRef>(null);
 tenderRef.current?.initiatePayment({
   amount: 150.00,
   referenceId: 'unique-payment-reference-123',
-  env: 'test',
   paymentExpirySeconds: 1800,
 });
 
@@ -192,6 +117,7 @@ tenderRef.current?.dismiss();
   ref={tenderRef}
   accessId="YOUR_ACCESS_ID"
   fiatCurrency="USD"
+  env="test"
 />;
 ```
 
@@ -203,6 +129,7 @@ The `TenderAgentSdk` component (when used directly) accepts the following config
 |------------------|---------------------------------------------|----------|-----------------------------------------------------------------------------|
 | `fiatCurrency`   | `string`                                    | Yes      | The fiat currency code (e.g., "USD", "EUR").                               |
 | `accessId`       | `string`                                    | Yes      | Your Tender Cash merchant Access ID.                                        |
+| `env`            | `"test"` \| `"live"` \| `"local"`          | Yes      | The environment to use (`"test"` for testing, `"live"` for production, `"local"` for local development). |
 | `onEventResponse`| `(data: onFinishResponse) => void`          | No       | Optional callback function triggered on payment completion or status change. |
 
 ## Callback Data (`onFinishResponse`)

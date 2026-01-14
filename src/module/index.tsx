@@ -14,6 +14,7 @@ import { ConfigContextType, TenderAgentProps, TenderAgentRef, StartPaymentParams
 const TenderAgentSdk = forwardRef<TenderAgentRef, TenderAgentProps>(({
     accessId,
     fiatCurrency,
+    env,
     onEventResponse,
 }, ref) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -32,15 +33,13 @@ const TenderAgentSdk = forwardRef<TenderAgentRef, TenderAgentProps>(({
         }, 200);
     };
 
-    const initiatePayment = ({ amount, referenceId, env, paymentExpirySeconds }: StartPaymentParams) => {
-        const paymentEnv = env || "test";
-
+    const initiatePayment = ({ amount, referenceId, paymentExpirySeconds }: StartPaymentParams) => {
         setConfig({
             referenceId,
             accessId,
             amount,
             fiatCurrency,
-            env: paymentEnv,
+            env,
             paymentExpirySeconds,
             onEventResponse,
             confirmationInterval: undefined,

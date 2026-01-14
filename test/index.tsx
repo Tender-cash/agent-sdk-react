@@ -20,7 +20,6 @@ const App = () => {
     tenderRef.current?.initiatePayment({
       amount: 100000,
       referenceId: "123456790-090-safsasf-12fg",
-      env: "local",
       paymentExpirySeconds: 1800,
     });
   };
@@ -44,6 +43,7 @@ const App = () => {
         ref={tenderRef}
         fiatCurrency="ngn"
         accessId="6t6hr2lqfGtSyKV6e4XAoZRsx4v85NwdqafEGwhUyHn2Tt7BelS3"
+        env="local"
         onEventResponse={OnFinishedResponse}
       />
     </>

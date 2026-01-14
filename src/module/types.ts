@@ -207,14 +207,14 @@ interface ConfigContextType {
 interface TenderAgentProps {
   fiatCurrency: string;
   accessId: string;
+  env: TenderEnvironments;
   onEventResponse?: (data:onFinishResponse)=> void;
 }
 
-// Parameters passed when initiating a payment via ref or startPayment
+// Parameters passed when initiating a payment via ref
 interface StartPaymentParams {
   referenceId: string;
   amount: number;
-  env: TenderEnvironments;
   paymentExpirySeconds?: number;
 }
 
