@@ -7,7 +7,7 @@ import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 /*                             Internal Dependency                            */
 /* -------------------------------------------------------------------------- */
 import { ConfigContextType } from "../types";
-import { getRequestSignature, TENDER_URLS } from "./utils";
+import { TENDER_URLS } from "./utils";
 import { triggerGlobalError } from "./error-handler";
 import Logger from "./logger";
 
@@ -18,14 +18,7 @@ let axiosInstance: AxiosInstance = axios.create();
 const setAxiosInstance = (config: ConfigContextType) => {
   axiosInstance.defaults.baseURL = TENDER_URLS[config.env] + "/v1/api/";
   axiosInstance.interceptors.request.use((request) => {
-      const { timeStamp, signature, requestId } = getRequestSignature({
-          accessId: config?.accessId || "",
-          accessSecret: config?.accessSecret || "",
-      });
-      request.headers["authorization"] = signature;
-      request.headers["x-timestamp"] = timeStamp;
       request.headers["x-access-id"] = config.accessId;
-      request.headers["x-request-id"] = requestId;
       return request;
   });
 };

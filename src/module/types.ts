@@ -56,7 +56,7 @@ enum paymentStatusMap {
 
 type  PaymentTypeProps = "partial" | "complete" | "over" | "pending" | "error";
 type  PaymentStatusProps = "partial-payment" | "completed" | "overpayment" | "pending" | "error" | "cancelled";
-type TenderEnvironments = "test" | "live";
+type TenderEnvironments = "test" | "live" | "local";
 
 interface FormHeaderProps {
   title: string;
@@ -192,7 +192,6 @@ interface onFinishResponse {
 interface ConfigContextType {
   referenceId: string; // required referenceId
   accessId: string; // required accessId
-  accessSecret: string; // required accessSecret
   amount: number; // required amount in fiat to Charge
   fiatCurrency: string; // required currency to make payment
   env: TenderEnvironments; // required environment for sdk
@@ -203,15 +202,25 @@ interface ConfigContextType {
   onClose?: () => void; // optional close handler for modal
 }
 
+// Public widget props (used when embedding the component directly)
+// Only static values that don't change per-payment
 interface TenderAgentProps {
-  referenceId: string;
-  amount: number;
   fiatCurrency: string;
   accessId: string;
-  accessSecret: string;
+  onEventResponse?: (data:onFinishResponse)=> void;
+}
+
+// Parameters passed when initiating a payment via ref or startPayment
+interface StartPaymentParams {
+  referenceId: string;
+  amount: number;
   env: TenderEnvironments;
   paymentExpirySeconds?: number;
-  onEventResponse?: (data:onFinishResponse)=> void;
+}
+
+interface TenderAgentRef {
+  initiatePayment: (params: StartPaymentParams) => void;
+  dismiss: () => void;
 }
 
 interface PaymentChain {
@@ -269,6 +278,8 @@ export {
   type ConfigContextType,
   type TenderEnvironments,
   type TenderAgentProps,
+  type StartPaymentParams,
+  type TenderAgentRef,
   type QueueItem,
   type PaymentCoinsResponse,
   type PaymentChainResponse,

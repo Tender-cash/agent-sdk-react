@@ -2,7 +2,7 @@
 /*                             External Dependency                            */
 /* -------------------------------------------------------------------------- */
 import { useEffect, useMemo, useState } from "react";
-import { useCopyToClipboard } from 'usehooks-ts';
+import { useCopyToClipboard } from "usehooks-ts";
 
 /* -------------------------------------------------------------------------- */
 /*                             Internal Dependency                            */
@@ -11,110 +11,204 @@ import { useConfig } from "../_context";
 import fetchPaymentDetailAction from "./details";
 import { URL_PATHS } from "../lib/utils";
 import { APIResponse } from "../types";
-import { PaymentChainResponse, PaymentCoin, IPaymentData, Option, PAYMENT_STAGE } from "../types";
+import {
+    PaymentChainResponse,
+    PaymentCoin,
+    IPaymentData,
+    Option,
+    PAYMENT_STAGE,
+} from "../types";
 
 const useAgentSdkAction = () => {
-  const { amount, fiatCurrency, client, referenceId } = useConfig();
-  const [stage, setStage] = useState<number>(PAYMENT_STAGE.FORM);
-  const [networks, setNetworks] = useState<Option[]|[]>([]);
-  const [coins, setCoins] = useState<Option[]|[]>([]);
-  const [selectedNetwork, setNetwork] = useState<Option|null>(null);
-  const [selectedCoin, setCoin] = useState<Option|null>(null);
-  const [formLoading, setFormLoading] = useState<boolean>(false);
-  const [pageLoading, setPageLoading] = useState<boolean>(true);
-  const [coinFetching, setCoinFetching] = useState<boolean>(false);
+    const { amount, fiatCurrency, client, referenceId } = useConfig();
+    const [stage, setStage] = useState<number>(PAYMENT_STAGE.FORM);
+    const [networks, setNetworks] = useState<Option[] | []>([]);
+    const [coins, setCoins] = useState<Option[] | []>([]);
+    const [selectedNetwork, setNetwork] = useState<Option | null>(null);
+    const [selectedCoin, setCoin] = useState<Option | null>(null);
+    const [formLoading, setFormLoading] = useState<boolean>(false);
+    const [pageLoading, setPageLoading] = useState<boolean>(true);
+    const [coinFetching, setCoinFetching] = useState<boolean>(false);
 
-  const { paymentDetails, isFetching, initiatePayment, confirmPayment, cancelPayment, expirePayment, paymentError, setPaymentError } = fetchPaymentDetailAction({ nextScreen:setStage, setPageLoading });
+    const {
+        paymentDetails,
+        isFetching,
+        initiatePayment,
+        confirmPayment,
+        cancelPayment,
+        expirePayment,
+        paymentError,
+        setPaymentError,
+    } = fetchPaymentDetailAction({ nextScreen: setStage, setPageLoading });
 
-  const fetchChains = async () => {
-    const chainsDF = await client?.get(`${URL_PATHS.CHAINS}`) as APIResponse<PaymentChainResponse>
-    if (chainsDF.data.status === "success"){
-      const chainList = chainsDF.data?.data?.data;
-      setNetworks(chainList.map(c=>({
-        label: c.name,
-        value: c.id,
-        icon: c.icon,
-      })));
-      setPageLoading(false);
-    } else {
-      setPaymentError({
-        title: "Error",
-        message: chainsDF.data.message || "Failed to fetch chains",
-        data: chainsDF.data,
-        isError: true,
-      });
-    }
-  }
+    const fetchChains = async () => {
+        try {
+            const chainsDF = (await client?.get(
+                `${URL_PATHS.CHAINS}`
+            )) as APIResponse<PaymentChainResponse>;
+            if (chainsDF.data.status === "success") {
+                const chainList = chainsDF.data?.data?.data;
+                setNetworks(
+                    chainList.map((c) => ({
+                        label: c.name,
+                        value: c.id,
+                        icon: c.icon,
+                    }))
+                );
+                setPageLoading(false);
+            } else {
+                setStage(PAYMENT_STAGE.INFO);
+                setPaymentError({
+                    title: "Error",
+                    message: chainsDF.data.message || "Failed to fetch chains",
+                    data: chainsDF.data,
+                    isError: true,
+                });
+            }
+        } catch (error) {
+          console.log("error", error);
+            setStage(PAYMENT_STAGE.INFO);
+            setPaymentError({
+                type: "fetch_chains_error",
+                title: "Error",
+                message:
+                    error instanceof Error
+                        ? error.message
+                        : "Failed to fetch chains",
+                data: error,
+                isError: true,
+            });
+        } finally {
+            setPageLoading(false);
+        }
+    };
 
-  const fetchCoins = async (network: Option) => {
-    setCoinFetching(true);
-    setNetwork(network);
-    setCoin(null);
-    const coinsDF = await client?.get(`${URL_PATHS.CHAINS}/${network.value}/currency`) as APIResponse<PaymentCoin[]>;
-    if (coinsDF.data.status === "success"){
-      const coinsList = coinsDF.data?.data;
-      setCoins(coinsList.map(c=>({ label: c.name, value: c.id, icon: c.icon })));
-      setCoinFetching(false);
-    } else {
-      setPaymentError({
-        title: "Error",
-        message: coinsDF.data.message || "Failed to fetch coins",
-        data: coinsDF.data,
-        isError: true,
-      });
-    }
-  }
+    const fetchCoins = async (network: Option) => {
+        try {
+            setCoinFetching(true);
+            setNetwork(network);
+            setCoin(null);
+            const coinsDF = (await client?.get(
+                `${URL_PATHS.CHAINS}/${network.value}/currency`
+            )) as APIResponse<PaymentCoin[]>;
+            if (coinsDF.data.status === "success") {
+                const coinsList = coinsDF.data?.data;
+                setCoins(
+                    coinsList.map((c) => ({
+                        label: c.name,
+                        value: c.id,
+                        icon: c.icon,
+                    }))
+                );
+                setCoinFetching(false);
+            } else {
+                setPaymentError({
+                    title: "Error",
+                    message: coinsDF.data.message || "Failed to fetch coins",
+                    data: coinsDF.data,
+                    isError: true,
+                });
+            }
+        } catch (error) {
+            setStage(PAYMENT_STAGE.INFO);
+            setPaymentError({
+                type: "fetch_error",
+                title: "Error",
+                message:
+                    error instanceof Error
+                        ? error.message
+                        : "Failed to fetch coins",
+                data: error,
+                isError: true,
+            });
+        } finally {
+            setCoinFetching(false);
+        }
+    };
 
-  useEffect(()=>{
-    fetchChains();
-  },[])
+    useEffect(() => {
+        fetchChains();
+    }, []);
 
-  // Reset formLoading when navigating away from FORM stage
-  useEffect(() => {
-    if (stage !== PAYMENT_STAGE.FORM) {
-      setFormLoading(false);
-    }
-  }, [stage]);
+    // Reset formLoading when navigating away from FORM stage
+    useEffect(() => {
+        if (stage !== PAYMENT_STAGE.FORM) {
+            setFormLoading(false);
+        }
+    }, [stage]);
 
-  const submitForm = async () => {
-    if (!selectedCoin || !selectedNetwork) return null;
-    setFormLoading(true);
-    await initiatePayment({
-      amount, 
-      fiatCurrency, 
-      chain: selectedNetwork?.value, 
-      coin: selectedCoin?.value,
-      referenceId,
-    });
-  }
+    const submitForm = async () => {
+        if (!selectedCoin || !selectedNetwork) return null;
+        setFormLoading(true);
+        await initiatePayment({
+            amount,
+            fiatCurrency,
+            chain: selectedNetwork?.value,
+            coin: selectedCoin?.value,
+            referenceId,
+        });
+    };
 
-  const paymentData:IPaymentData & { cancelPayment:()=>void, confirmPayment: ()=>void, expirePayment: ()=>void, disabled: boolean, loading: boolean } = useMemo(()=>({
-    ...paymentDetails,
-    disabled: isFetching,
-    loading: isFetching,
-    cancelPayment,
-    confirmPayment,
-    expirePayment
-  }),[paymentDetails, isFetching, confirmPayment, cancelPayment, expirePayment, setStage, setPageLoading]);
+    const paymentData: IPaymentData & {
+        cancelPayment: () => void;
+        confirmPayment: () => void;
+        expirePayment: () => void;
+        disabled: boolean;
+        loading: boolean;
+    } = useMemo(
+        () => ({
+            ...paymentDetails,
+            disabled: isFetching,
+            loading: isFetching,
+            cancelPayment,
+            confirmPayment,
+            expirePayment,
+        }),
+        [
+            paymentDetails,
+            isFetching,
+            confirmPayment,
+            cancelPayment,
+            expirePayment,
+            setStage,
+            setPageLoading,
+        ]
+    );
 
-  return useMemo(()=>({
-    currentStage:stage,
-    amount,
-    fiatCurrency,
-    networks,
-    coins,
-    selectedCoin,
-    selectedNetwork,
-    setCoin,
-    setNetwork: fetchCoins,
-    submitForm,
-    formDisabled: !selectedNetwork || !selectedCoin,
-    formLoading,
-    paymentData,
-    pageLoading,
-    coinFetching,
-    paymentError,
-  }),[stage, amount, fiatCurrency, selectedCoin, selectedNetwork, setCoin, setNetwork, submitForm, formLoading, paymentData, coinFetching, paymentError]);
-}
+    return useMemo(
+        () => ({
+            currentStage: stage,
+            amount,
+            fiatCurrency,
+            networks,
+            coins,
+            selectedCoin,
+            selectedNetwork,
+            setCoin,
+            setNetwork: fetchCoins,
+            submitForm,
+            formDisabled: !selectedNetwork || !selectedCoin,
+            formLoading,
+            paymentData,
+            pageLoading,
+            coinFetching,
+            paymentError,
+        }),
+        [
+            stage,
+            amount,
+            fiatCurrency,
+            selectedCoin,
+            selectedNetwork,
+            setCoin,
+            setNetwork,
+            submitForm,
+            formLoading,
+            paymentData,
+            coinFetching,
+            paymentError,
+        ]
+    );
+};
 
 export default useAgentSdkAction;

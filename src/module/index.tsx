@@ -1,7 +1,7 @@
 /* -------------------------------------------------------------------------- */
 /*                             External Dependency                            */
 /* -------------------------------------------------------------------------- */
-import { useState, useEffect } from "react";
+import { useState, useEffect, forwardRef, useImperativeHandle } from "react";
 import { createPortal } from "react-dom";
 /* -------------------------------------------------------------------------- */
 /*                             Internal Dependency                            */
@@ -9,20 +9,16 @@ import { createPortal } from "react-dom";
 import "../styles/index.css";
 import { ConfigProvider } from "./_context";
 import TenderWidget from "./screens";
-import { TenderAgentProps } from "./types";
+import { ConfigContextType, TenderAgentProps, TenderAgentRef, StartPaymentParams } from "./types";
 
-const TenderAgentSdk = ({
-    referenceId,
-    amount,
+const TenderAgentSdk = forwardRef<TenderAgentRef, TenderAgentProps>(({
     accessId,
-    accessSecret,
-    env,
     fiatCurrency,
-    paymentExpirySeconds,
     onEventResponse,
-}: TenderAgentProps) => {
-    const [isOpen, setIsOpen] = useState(true);
-    const [shouldRender, setShouldRender] = useState(true);
+}, ref) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [shouldRender, setShouldRender] = useState(false);
+    const [config, setConfig] = useState<ConfigContextType | null>(null);
 
     const handleClose = () => {
         setIsOpen(false);
@@ -36,6 +32,38 @@ const TenderAgentSdk = ({
         }, 200);
     };
 
+    const initiatePayment = ({ amount, referenceId, env, paymentExpirySeconds }: StartPaymentParams) => {
+        const paymentEnv = env || "test";
+
+        setConfig({
+            referenceId,
+            accessId,
+            amount,
+            fiatCurrency,
+            env: paymentEnv,
+            paymentExpirySeconds,
+            onEventResponse,
+            confirmationInterval: undefined,
+            theme: "light",
+            onClose: handleClose,
+        });
+
+        setShouldRender(true);
+        // Small delay to ensure DOM is ready before showing
+        setTimeout(() => {
+            setIsOpen(true);
+        }, 10);
+    };
+
+    const dismiss = () => {
+        handleClose();
+    };
+
+    useImperativeHandle(ref, () => ({
+        initiatePayment,
+        dismiss,
+    }));
+
     useEffect(() => {
         // Cleanup on unmount
         return () => {
@@ -46,7 +74,7 @@ const TenderAgentSdk = ({
         };
     }, []);
 
-    if (!shouldRender) return null;
+    if (!shouldRender || !config) return null;
 
     return createPortal(
         <div className={`tender-cash-agent-sdk-modal ${!isOpen ? "tender-cash-agent-sdk-modal-closing" : ""}`}>
@@ -56,17 +84,7 @@ const TenderAgentSdk = ({
             {/* Modal Content Container */}
             <div className="tender-cash-agent-sdk-modal-content">
                 <ConfigProvider
-                    config={{
-                        referenceId,
-                        accessId,
-                        accessSecret,
-                        amount,
-                        fiatCurrency,
-                        env,
-                        paymentExpirySeconds,
-                        onEventResponse,
-                        onClose: handleClose,
-                    }}
+                    config={config}
                 >
                     <TenderWidget />
                 </ConfigProvider>
@@ -74,6 +92,8 @@ const TenderAgentSdk = ({
         </div>,
         document.getElementById("tender-cash-agent-sdk") || document.body
     );
-};
+});
+
+TenderAgentSdk.displayName = "TenderAgentSdk";
 
 export default TenderAgentSdk;

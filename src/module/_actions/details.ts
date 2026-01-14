@@ -36,7 +36,7 @@ const fetchPaymentDetailAction = ({
     >(undefined);
     const [isFetching, setIsFetching] = useState(false);
     const [paymentError, setPaymentError] = useState<
-        { title: string; message: string; data: any, isError: boolean } | undefined
+        { type?: string; title: string; message: string; data: any, isError: boolean } | undefined
     >(undefined);
 
     const initiatePayment = async ({
