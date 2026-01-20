@@ -203,12 +203,19 @@ interface ConfigContextType {
 }
 
 // Public widget props (used when embedding the component directly)
-// Only static values that don't change per-payment
+// Supports two patterns:
+// 1. With ref: Pass only static props, use ref to initiate payment
+// 2. Without ref: Pass all props including payment params, widget auto-opens
 interface TenderAgentProps {
   fiatCurrency: string;
   accessId: string;
   env: TenderEnvironments;
   onEventResponse?: (data:onFinishResponse)=> void;
+  // Optional payment params for direct usage (without ref)
+  referenceId?: string;
+  amount?: number;
+  paymentExpirySeconds?: number;
+  theme?: "light" | "dark";
 }
 
 // Parameters passed when initiating a payment via ref

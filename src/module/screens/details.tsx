@@ -115,7 +115,7 @@ const RenderPendingDetails = ({
                                 {address}
                             </p>
                             <button
-                                className="ta:flex-row !ta:rounded-2xl !ta:border-[#D0D5DD] ta:bg-[#FFFFFF] ta:p-2 ta:w-[64px] ta:cursor-pointer ta:rounded-lg ta:shadow-sm ta:shadow-[#0000000D]"
+                                className="ta:flex-row ta:rounded-2xl ta:border-[#D0D5DD] ta:bg-[#FFFFFF] ta:p-2 ta:w-[64px] ta:cursor-pointer ta:rounded-lg ta:shadow-sm ta:shadow-[#0000000D]"
                                 onClick={() => copy(address)}
                             >
                                 <span className="ta:flex ta:flex-row ta:items-center ta:justify-center ta:gap-1 ta:text-xs sm:ta:text-[14px] ta:font-medium ta:text-[#344054]">
@@ -214,7 +214,7 @@ const RenderFinishedDetails = ({
                     </div>
                     <div className="ta:my-auto ta:flex ta:w-full sm:ta:w-1/4 ta:flex-row ta:justify-center sm:ta:justify-end">
                         <Button
-                            className="ta:flex-row ta:rounded-2xl !ta:border-[#D0D5DD] !ta:bg-white !ta:px-3 !ta:py-2 ta:min-h-[44px] ta:w-full sm:ta:w-auto"
+                            className="ta:flex-row ta:rounded-2xl ta:border-[#D0D5DD] ta:bg-white ta:px-3 ta:py-2 ta:min-h-[44px] ta:w-full sm:ta:w-auto"
                             variant="outline"
                             onClick={() => copy(address)}
                         >

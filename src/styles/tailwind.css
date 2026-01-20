@@ -1,6 +1,51 @@
 @import "tailwindcss" prefix(ta);
+@import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
 
-@theme {
+@layer base {
+  :host {
+    box-sizing: border-box;
+    all: initial;
+    font-family: system-ui, sans-serif;
+  }
+
+  *, ::before, ::after {
+    box-sizing: inherit;
+  }
+
+  /* Font face declarations for CircularStd */
+  @font-face {
+    font-family: "CircularStd";
+    src: url("../assets/fonts/CircularStd-Book.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: "CircularStd";
+    src: url("../assets/fonts/CircularStd-Medium.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: "CircularStd";
+    src: url("../assets/fonts/CircularStd-Bold.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+  }
+
+  /* Default font family for all elements */
+  * {
+    font-family: var(--font-circular-std);
+  }
+}
+
+/* @theme variables scoped to :host for shadow DOM - prevents leaking into main document */
+:host {
+  /* Font family definitions using Tailwind v4 @theme syntax */
+  --font-circular-std: "CircularStd", sans-serif;
+  --font-rubik: "Rubik", sans-serif;
+  
   /* Colors mapped to runtime CSS variables (tas-*) */
   --color-primary: var(--tas-primary);
   --color-info: var(--tas-info);
@@ -16,8 +61,8 @@
   /* Border radius tokens */
   --radius-modal: var(--tas-modal-radius);
 
-  /* Font family (reuse CircularStd + system fallbacks defined in index.css) */
-  --font-sans: var(--circular-std-font), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  /* Font family for Tailwind utilities */
+  --font-sans: var(--font-circular-std), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
   /* Screens / breakpoints (from tailwind.config.ts screens + extend.screens) */
   --breakpoint-xs: 375px;

@@ -1,7 +1,7 @@
 {
     "name": "@tender-cash/agent-sdk-react",
     "license": "MIT",
-    "version": "1.0.0",
+    "version": "1.0.1-beta-3",
     "repository": "git://github.com/tender-cash/agent-sdk-react.git",
     "description": "",
     "author": "Tender",
@@ -12,6 +12,7 @@
     "browser": "./dist/tender-cash-agent-sdk-react.es.js",
     "scripts": {
         "build": "vite build",
+        "build:css": "vite build --config vite.css.config.ts",
         "lint": "eslint --fix 'src/**/*'",
         "test": "jest",
         "dev": "vite",

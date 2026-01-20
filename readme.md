@@ -19,7 +19,7 @@ npm install @tender-cash/agent-sdk-react
 
 ## Styling
 
-The component requires its CSS file to be imported for proper styling. Import it in your main application entry point (e.g., `src/index.js`, `src/main.tsx`):
+The component uses Shadow DOM to prevent CSS leaks into your application. The styles are automatically injected into the shadow root, so you don't need to import the CSS file manually. However, if you're using the component in a build that doesn't bundle CSS automatically, you can still import it:
 
 ```javascript
 import '@tender-cash/agent-sdk-react/dist/style.css';
@@ -27,110 +27,61 @@ import '@tender-cash/agent-sdk-react/dist/style.css';
 
 ## Usage
 
-For more control over the modal, use the `TenderAgentSdk` component with a ref. This allows you to programmatically initiate and dismiss the payment modal.
+Pass all payment parameters directly as props. The modal will automatically open when the component mounts with the required payment parameters.
 
 ```jsx
-import { useRef } from 'react';
-import '@tender-cash/agent-sdk-react/dist/style.css'; // Don't forget styles!
-import { TenderAgentSdk, TenderAgentRef, onFinishResponse } from '@tender-cash/agent-sdk-react';
+import '@tender-cash/agent-sdk-react/dist/style.css';
+import { TenderAgentSdk, onFinishResponse } from '@tender-cash/agent-sdk-react';
 
 function PaymentComponent() {
-  const tenderRef = useRef<TenderAgentRef>(null);
-
-  // --- Static Configuration ---
-  const accessId = 'YOUR_ACCESS_ID'; // Replace with your actual Access ID
-  const fiatCurrency = 'USD'; // Currency code
-  const environment = 'test'; // 'test' or 'live'
-
   const handleEventResponse = (response: onFinishResponse) => {
     console.log('SDK Response:', response);
     // Handle success, partial payment, overpayment, error based on response.status
   };
 
-  const handleOpenModal = () => {
-    tenderRef.current?.initiatePayment({
-      amount: 150.00,
-      referenceId: 'unique-payment-reference-123',
-      paymentExpirySeconds: 1800,
-    });
-  };
-
-  const handleDismissModal = () => {
-    tenderRef.current?.dismiss();
-  };
-
   return (
-    <div>
-      <button onClick={handleOpenModal}>
-        Pay ${amount.toFixed(2)} {fiatCurrency}
-      </button>
-      <button onClick={handleDismissModal}>
-        Close Modal
-      </button>
-
-      <TenderAgentSdk
-        ref={tenderRef}
-        accessId={accessId}
-        fiatCurrency={fiatCurrency}
-        env={environment}
-        onEventResponse={handleEventResponse}
-      />
-    </div>
+    <TenderAgentSdk
+      accessId="YOUR_ACCESS_ID"
+      fiatCurrency="USD"
+      env="test"
+      onEventResponse={handleEventResponse}
+      amount={150.00}
+      referenceId="unique-payment-reference-123"
+      paymentExpirySeconds={1800}
+    />
   );
 }
 
 export default PaymentComponent;
 ```
 
+**Note:** The modal opens automatically on component mount when `referenceId` and `amount` are provided as props.
+
 ## API Reference
-
-### `TenderAgentSdk` Component with Ref
-
-The `TenderAgentSdk` component can be used with a ref to programmatically control the modal.
-
-**Ref Methods (`TenderAgentRef`):**
-
-| Method              | Description                                              |
-|---------------------|----------------------------------------------------------|
-| `initiatePayment()` | Initiates a payment and opens the payment modal          |
-| `dismiss()`         | Closes/dismisses the payment modal                       |
-
-**Example:**
-```typescript
-import { useRef } from 'react';
-import { TenderAgentSdk, TenderAgentRef } from '@tender-cash/agent-sdk-react';
-
-const tenderRef = useRef<TenderAgentRef>(null);
-
-// Open modal
-tenderRef.current?.initiatePayment({
-  amount: 150.00,
-  referenceId: 'unique-payment-reference-123',
-  paymentExpirySeconds: 1800,
-});
-
-// Close modal
-tenderRef.current?.dismiss();
-
-// Render component
-<TenderAgentSdk
-  ref={tenderRef}
-  accessId="YOUR_ACCESS_ID"
-  fiatCurrency="USD"
-  env="test"
-/>;
-```
 
 ### Component Props (`TenderAgentProps`)
 
-The `TenderAgentSdk` component (when used directly) accepts the following configuration props:
+The `TenderAgentSdk` component accepts the following props:
 
-| Prop             | Type                                        | Required | Description                                                                 |
-|------------------|---------------------------------------------|----------|-----------------------------------------------------------------------------|
-| `fiatCurrency`   | `string`                                    | Yes      | The fiat currency code (e.g., "USD", "EUR").                               |
-| `accessId`       | `string`                                    | Yes      | Your Tender Cash merchant Access ID.                                        |
-| `env`            | `"test"` \| `"live"` \| `"local"`          | Yes      | The environment to use (`"test"` for testing, `"live"` for production, `"local"` for local development). |
-| `onEventResponse`| `(data: onFinishResponse) => void`          | No       | Optional callback function triggered on payment completion or status change. |
+#### Required Props
+
+| Prop             | Type                                        | Description                                                                 |
+|------------------|---------------------------------------------|-----------------------------------------------------------------------------|
+| `fiatCurrency`   | `string`                                    | The fiat currency code (e.g., "USD", "EUR").                               |
+| `accessId`       | `string`                                    | Your Tender Cash merchant Access ID.                                        |
+| `env`            | `"test"` \| `"live"` \| `"local"`          | The environment to use (`"test"` for testing, `"live"` for production, `"local"` for local development). |
+
+#### Optional Props
+
+| Prop                    | Type                                        | Description                                                                 |
+|-------------------------|---------------------------------------------|-----------------------------------------------------------------------------|
+| `onEventResponse`       | `(data: onFinishResponse) => void`          | Callback function triggered on payment completion or status change.         |
+| `referenceId`           | `string`                                    | Payment reference ID. Required to auto-open the modal.                     |
+| `amount`               | `number`                                    | Payment amount in fiat currency. Required to auto-open the modal.          |
+| `paymentExpirySeconds` | `number`                                    | Payment expiry time in seconds. Optional, defaults to 30 minutes.           |
+| `theme`                | `"light"` \| `"dark"`                       | Theme for the payment modal. Optional, defaults to "light".                 |
+
+**Note:** When `referenceId` and `amount` are provided as props, the modal will automatically open on component mount.
 
 ## Callback Data (`onFinishResponse`)
 
@@ -155,6 +106,13 @@ interface IPaymentData {
   status?: "partial-payment" | "completed" | "overpayment" | "pending" | "error" | "cancelled";
 }
 ```
+
+## Features
+
+- **Shadow DOM Isolation**: The component uses Shadow DOM to prevent CSS leaks and conflicts with your application styles.
+- **Auto-Open**: The modal automatically opens when payment parameters are provided.
+- **TypeScript Support**: Full TypeScript definitions included.
+- **Responsive Design**: Works seamlessly on desktop and mobile devices.
 
 ## License
 

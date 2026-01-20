@@ -16,6 +16,6 @@
             "@/*": ["./*"]
         }
     },
-    "include": ["src/**/*", "rename-types.ts", "global.d.ts", ".eslintrc.js", "vite.config.ts", "tailwind.config.ts", "test"],
+    "include": ["src/**/*", "rename-types.ts", "global.d.ts", ".eslintrc.js", "vite.config.ts", "vite.css.config.ts", "tailwind.config.ts", "test"],
     "exclude": ["node_modules", "dist"]
 }

@@ -1,19 +1,18 @@
 import { useRef, useState } from 'react'
 import './App.css'
-import '@tender-cash/agent-sdk-react/dist/style.css';
-import { TenderAgentRef, TenderAgentSdk, onFinishResponse } from '@tender-cash/agent-sdk-react';
+// import { TenderAgentRef, TenderAgentSdk, onFinishResponse } from '@tender-cash/agent-sdk-react';
+import { TenderAgentRef, TenderAgentSdk, onFinishResponse } from '../../dist/tender-cash-agent-sdk-react.es.js';
 
 function App() {
   const [accessId, setAccessId] = useState('');
-  const [accessSecret, setAccessSecret] = useState('');
   const [amount, setAmount] = useState('');
-  const [fiatCurrency, setFiatCurrency] = useState('USD');
+  const [fiatCurrency, setFiatCurrency] = useState('NGN');
   const [showSdk, setShowSdk] = useState(false);
   const [sdkResponse, setSdkResponse] = useState<onFinishResponse | null>(null);
   const tenderRef = useRef<TenderAgentRef>(null);
 
   const handleOpenSdk = () => {
-    if (!accessId || !accessSecret || !amount || !fiatCurrency) {
+    if (!accessId || !amount || !fiatCurrency) {
       alert('Please fill in all fields');
       return;
     }
@@ -33,7 +32,7 @@ function App() {
   return (
     <>
       <div style={{ border: '1px solid #ccc', padding: '20px', marginTop: '20px' }}>
-        <h1 style={{textAlign: 'center', fontSize: '42px', fontWeight: 'bold', marginBottom: '20px'}}>Tender Agent SDK Example</h1>
+        <h1 style={{ textAlign: 'center', fontSize: '42px', fontWeight: 'bold', marginBottom: '20px' }}>Tender Agent SDK Example</h1>
 
         <div style={{ marginBottom: '20px', display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'flex-start', placeItems: 'center' }}>
           <div>
@@ -48,17 +47,6 @@ function App() {
             />
           </div>
           <div>
-            <label htmlFor="accessSecret">Access Secret: </label>
-            <input
-              id="accessSecret"
-              type="password"
-              value={accessSecret}
-              onChange={(e) => setAccessSecret(e.target.value)}
-              placeholder="Enter Access Secret"
-              style={{ width: '100%', height: '20px', padding: '20px', border: '1px solid #ccc' }}
-            />
-          </div>
-          <div>
             <label htmlFor="amount">Amount: </label>
             <input
               id="amount"
@@ -66,7 +54,7 @@ function App() {
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               placeholder="Enter Amount"
-              style={{ width: '100%', height: '20px', padding: '20px', border: '1px solid #ccc' }} 
+              style={{ width: '100%', height: '20px', padding: '20px', border: '1px solid #ccc' }}
             />
           </div>
           <div>
@@ -94,6 +82,17 @@ function App() {
           <button className='main-btn' onClick={() => setShowSdk(false)} style={{ marginTop: '10px' }}>
             Cancel / Close SDK Manually
           </button>
+
+          <TenderAgentSdk
+            accessId={accessId}
+            fiatCurrency={fiatCurrency}
+            env="live"
+            ref={tenderRef}
+            onEventResponse={handleEventResponse}
+            amount={parseFloat(amount) || 0}
+            referenceId={Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)}
+            paymentExpirySeconds={1800}
+          />
         </>
       )}
 
@@ -103,14 +102,6 @@ function App() {
           <pre style={{ width: '100%', textAlign: 'left' }}>{JSON.stringify(sdkResponse, null, 2)}</pre>
         </div>
       )}
-      
-      <TenderAgentSdk
-        accessId={accessId}
-        fiatCurrency={fiatCurrency}
-        env="test"
-        ref={tenderRef}
-        onEventResponse={handleEventResponse}
-      />
     </>
   )
 }

@@ -43,6 +43,7 @@ export const SelectDropdown = ({
 	const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0, width: 0 });
 	const selectRef = useRef<HTMLDivElement | null>(null);
 	const dropdownRef = useRef<HTMLUListElement | null>(null);
+	const [portalContainer, setPortalContainer] = useState<HTMLElement | ShadowRoot | null>(null);
 
 	const toggleDropdown = () => {
 		if (!disabled) {
@@ -80,24 +81,49 @@ export const SelectDropdown = ({
 		}
 	};
 
+	// Determine portal container (shadow root container or document body)
 	useEffect(() => {
-		const handleClickOutside = (event: MouseEvent) => {
+		if (selectRef.current) {
+			const rootNode = selectRef.current.getRootNode();
+			if (rootNode instanceof ShadowRoot) {
+				// We're inside a shadow DOM, create or find a dropdown container
+				// React 18+ supports ShadowRoot directly, but using a container is more explicit
+				let dropdownContainer = rootNode.getElementById('tender-dropdown-container');
+				if (!dropdownContainer) {
+					dropdownContainer = document.createElement('div');
+					dropdownContainer.id = 'tender-dropdown-container';
+					rootNode.appendChild(dropdownContainer);
+				}
+				setPortalContainer(dropdownContainer);
+			} else {
+				// We're in the regular DOM, use document.body
+				setPortalContainer(document.body);
+			}
+		}
+	}, []);
+
+	useEffect(() => {
+		const handleClickOutside = (event: Event) => {
+			const target = event.target as Node;
 			if (
 				selectRef.current && 
-				!selectRef.current.contains(event.target as Node) &&
+				!selectRef.current.contains(target) &&
 				dropdownRef.current &&
-				!dropdownRef.current.contains(event.target as Node)
+				!dropdownRef.current.contains(target)
 			) {
 				closeDropdown();
 			}
 		};
 
 		if (isOpen) {
-			document.addEventListener("mousedown", handleClickOutside);
+			// Use the appropriate root node for event listeners
+			const rootNode = selectRef.current?.getRootNode() || document;
+			rootNode.addEventListener("mousedown", handleClickOutside);
+			
+			return () => {
+				rootNode.removeEventListener("mousedown", handleClickOutside);
+			};
 		}
-		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
-		};
 	}, [isOpen]);
 
 	const updateDropdownPosition = () => {
@@ -137,7 +163,13 @@ export const SelectDropdown = ({
 	return (
 		<div ref={selectRef} className={`ta:relative ta:w-full sm:ta:w-fit ${className}`} tabIndex={0} onKeyDown={handleKeyDown}>
 			<button
-				className={cn(`ta:flex ta:items-center ta:justify-between !ta:border ta:border-[0.1px] ta:px-3 ta:py-2 ta:text-sm ta:min-h-[44px] ta:touch-manipulation ${triggerClassName} ${disabled ? "ta:cursor-not-allowed ta:opacity-50" : "ta:cursor-pointer"} ${isOpen ? "!ta:bg-white" : "!ta:bg-white"}`)}
+				className={cn(
+					"ta:flex ta:items-center ta:justify-between ta:px-3 ta:py-2 ta:text-sm ta:min-h-[44px] ta:touch-manipulation",
+					"ta:border ta:border-solid ta:border-[#E6E6E6]",
+					triggerClassName,
+					disabled ? "ta:cursor-not-allowed ta:opacity-50" : "ta:cursor-pointer",
+					isOpen ? "ta:bg-white" : "ta:bg-white"
+				)}
 				onClick={toggleDropdown}
 				disabled={disabled}
 				type="button"
@@ -151,7 +183,7 @@ export const SelectDropdown = ({
 				<span className="ta:flex ta:flex-row ta:items-center ta:gap-2 ta:ml-2 ta:w-1/4">{loading ?  <Spinner size={15} /> : <ChevronDown size={18} className="ta:text-[#667085]" />}</span>
 			</button>
 
-			{isOpen && typeof document !== 'undefined' && createPortal(
+			{isOpen && typeof document !== 'undefined' && portalContainer && createPortal(
 				<ul
 					ref={dropdownRef}
 					className={`ta:fixed ta:z-[99999] ta:h-fit ta:max-h-40 ta:overflow-y-auto ta:overflow-x-hidden ta:rounded-lg ta:border ta:border-[#E6E6E6] ta:shadow-xl ta:max-w-[calc(100vw-2rem)] sm:ta:max-w-none ta:bg-white ta:text-black ${dropdownClassName}`}
@@ -185,7 +217,7 @@ export const SelectDropdown = ({
 						</li>
 					))}
 				</ul>,
-				document.body
+				portalContainer
 			)}
 		</div>
 	);

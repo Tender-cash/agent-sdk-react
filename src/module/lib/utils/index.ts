@@ -48,12 +48,24 @@ const getRequestSignature = ({
   return { signature, timeStamp: String(timestamp), requestId };
 };
 
-const applyTheme = (theme: ITheme) => {
-  const root = document.documentElement;
+const applyTheme = (theme: ITheme, hostElement?: HTMLElement) => {
+  // Use shadow host element if provided, otherwise find it, or fallback to document root
+  // For shadow DOM, we want to set variables on the host element, not document root
+  let targetElement: HTMLElement = document.documentElement;
+  
+  if (hostElement) {
+    targetElement = hostElement;
+  } else {
+    // Try to find the shadow host element
+    const shadowHost = document.querySelector('[data-tender-sdk-shadow-host]') as HTMLElement;
+    if (shadowHost) {
+      targetElement = shadowHost;
+    }
+  }
 
   Object.keys(theme).forEach((key) => {
       const value = theme[key as keyof typeof theme] || ""; // Provide a fallback value
-      root.style.setProperty(`--tas-${key}`, value);
+      targetElement.style.setProperty(`--tas-${key}`, value);
   });
 };
 

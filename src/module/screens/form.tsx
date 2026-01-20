@@ -70,7 +70,7 @@ const PaymentForm = ({
                                 value={selectedNetwork}
                                 className="ta:w-full"
                                 disabled={formLoading}
-                                triggerClassName="!ta:bg-white !ta:border !ta:border-[#E6E6E6] ta:rounded-l-xl ta:px-4 ta:py-3 focus:ta:outline-none hover:ta:border-[#D0D5DD] ta:justify-between ta:w-full ta:min-h-[44px] ta:truncate ta:overflow-hidden ta:text-ellipsis"
+                                triggerClassName="ta:bg-white ta:border ta:border-[#E6E6E6] ta:rounded-l-xl ta:px-4 ta:py-3 focus:ta:outline-none hover:ta:border-[#D0D5DD] ta:justify-between ta:w-full ta:min-h-[44px] ta:truncate ta:overflow-hidden ta:text-ellipsis"
                                 placeholder="Select Network/Chain"
                                 loading={formLoading}
                             />
@@ -88,7 +88,7 @@ const PaymentForm = ({
                                 disabled={!selectedNetwork || formLoading}
                                 loading={formLoading}
                                 className="ta:w-full ta:truncate ta:overflow-hidden ta:text-ellipsis"
-                                triggerClassName="!ta:bg-white !ta:border !ta:border-[#E6E6E6] ta:rounded-r-xl ta:px-4 ta:py-3 focus:ta:outline-none hover:ta:border-[#D0D5DD] ta:justify-between ta:w-full ta:min-h-[44px]"
+                                triggerClassName="ta:bg-white ta:border ta:border-[#E6E6E6] ta:rounded-r-xl ta:px-4 ta:py-3 focus:ta:outline-none hover:ta:border-[#D0D5DD] ta:justify-between ta:w-full ta:min-h-[44px]"
                                 placeholder="Select Coin/Token"
                             />
                         </div>

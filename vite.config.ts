@@ -73,8 +73,8 @@ export default defineConfig(({ mode }) => {
       outDir: 'dist', // Base output directory
       // Rollup options for fine-tuning the build
       rollupOptions: {
-        // Externalize peer dependencies
-        external: ['react', 'react-dom', 'react-dom/client'],
+        // Externalize react as peer dependency, but bundle react-dom for standalone widget
+        external: ['react'],
         output: {
           banner: `/**
  * ${moduleName}.js
@@ -86,12 +86,10 @@ export default defineConfig(({ mode }) => {
  */`,
           // Use 'exports: "named"' to ensure compatibility
           exports: 'named',
-          // Control asset filenames, specifically naming the CSS file
+          // Control asset filenames - CSS is bundled inline, so we don't need separate CSS file
           assetFileNames: (assetInfo) => {
-            if (assetInfo.name?.endsWith('.css')) {
-              return 'style.css';
-            }
-            // Default naming for other assets
+            // CSS files are inlined via ?inline, so they shouldn't appear as separate assets
+            // But keep this for other assets like fonts, images, etc.
             return 'assets/[name]-[hash][extname]';
           },
         },
@@ -114,6 +112,9 @@ export default defineConfig(({ mode }) => {
       },
       // Minify production build
       minify: isProduction ? 'esbuild' : false,
+      // Bundle CSS inline instead of extracting to separate file
+      // CSS is already inlined via ?inline import, but this ensures no separate CSS file is created
+      cssCodeSplit: false,
       // Generate manifest file if needed (usually for apps, not libraries)
       // manifest: true,
       // Empty the output directory before building
