@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react'
 import './App.css'
-// import { TenderAgentRef, TenderAgentSdk, onFinishResponse } from '@tender-cash/agent-sdk-react';
-import { TenderAgentRef, TenderAgentSdk, onFinishResponse } from '../../dist/tender-cash-agent-sdk-react.es.js';
+import { TenderAgentRef, TenderAgentSdk, onFinishResponse } from '@tender-cash/agent-sdk-react';
 
 function App() {
   const [accessId, setAccessId] = useState('');
@@ -86,7 +85,7 @@ function App() {
           <TenderAgentSdk
             accessId={accessId}
             fiatCurrency={fiatCurrency}
-            env="live"
+            env="test"
             ref={tenderRef}
             onEventResponse={handleEventResponse}
             amount={parseFloat(amount) || 0}
