@@ -3,6 +3,7 @@
 /* -------------------------------------------------------------------------- */
 import { useState, useEffect, forwardRef, useImperativeHandle, useCallback } from "react";
 import { createPortal } from "react-dom";
+import { X } from "lucide-react";
 // import "../styles/index.css";
 /* -------------------------------------------------------------------------- */
 /*                             Internal Dependency                            */
@@ -23,6 +24,7 @@ const TenderAgentSdk = forwardRef<TenderAgentRef, TenderAgentProps>(({
     amount: directAmount,
     paymentExpirySeconds: directPaymentExpirySeconds,
     theme: directTheme = "light",
+    closeModal: closeModalProp,
 }, ref) => {
     const [isOpen, setIsOpen] = useState(false);
     const [shouldRender, setShouldRender] = useState(false);
@@ -41,7 +43,11 @@ const TenderAgentSdk = forwardRef<TenderAgentRef, TenderAgentProps>(({
                 modalElement.remove();
             }
         }, 200);
-    }, []);
+        // Call the closeModal prop if provided
+        if (closeModalProp) {
+            closeModalProp();
+        }
+    }, [closeModalProp]);
 
     const initiatePayment = useCallback(({ amount, referenceId, paymentExpirySeconds }: StartPaymentParams) => {
         setConfig({
@@ -54,7 +60,7 @@ const TenderAgentSdk = forwardRef<TenderAgentRef, TenderAgentProps>(({
             onEventResponse,
             confirmationInterval: undefined,
             theme: directTheme,
-            onClose: handleClose,
+            closeModal: handleClose,
         });
 
         setShouldRender(true);
@@ -90,10 +96,15 @@ const TenderAgentSdk = forwardRef<TenderAgentRef, TenderAgentProps>(({
         handleClose();
     }, [handleClose]);
 
+    const closeModal = useCallback(() => {
+        handleClose();
+    }, [handleClose]);
+
     useImperativeHandle(ref, () => ({
         initiatePayment,
         dismiss,
-    }), [initiatePayment, dismiss]);
+        closeModal,
+    }), [initiatePayment, dismiss, closeModal]);
 
     useEffect(() => {
         // Cleanup on unmount
@@ -107,13 +118,31 @@ const TenderAgentSdk = forwardRef<TenderAgentRef, TenderAgentProps>(({
 
     if (!shouldRender || !config) return null;
 
+    const handleCloseClick = (event?: React.MouseEvent) => {
+        // Prevent event bubbling if called from button click
+        if (event) {
+            event.stopPropagation();
+        }
+        handleClose();
+    };
+
     const modalContent = (
         <div className={`tender-cash-agent-sdk-modal ${!isOpen ? "tender-cash-agent-sdk-modal-closing" : ""}`}>
             {/* Modal Backdrop */}
-            <div className="tender-cash-agent-sdk-modal-backdrop" />
+            <div className="tender-cash-agent-sdk-modal-backdrop" onClick={handleCloseClick} />
 
             {/* Modal Content Container */}
             <div className="tender-cash-agent-sdk-modal-content">
+                {/* Close Button */}
+                <button
+                    onClick={handleCloseClick}
+                    className="ta:absolute ta:top-4 ta:right-4 ta:z-[10001] ta:flex ta:items-center ta:justify-center ta:w-8 ta:h-8 ta:rounded-full ta:bg-white ta:border ta:border-[#E6E6E6] ta:text-[#667085] ta:hover:bg-gray-50 ta:hover:text-[#101828] ta:transition-colors ta:cursor-pointer ta:touch-manipulation ta:shadow-sm"
+                    aria-label="Close modal"
+                    type="button"
+                >
+                    <X size={18} />
+                </button>
+
                 <ConfigProvider
                     config={config}
                 >

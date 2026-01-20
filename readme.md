@@ -17,20 +17,11 @@ Using npm:
 npm install @tender-cash/agent-sdk-react
 ```
 
-## Styling
-
-The component uses Shadow DOM to prevent CSS leaks into your application. The styles are automatically injected into the shadow root, so you don't need to import the CSS file manually. However, if you're using the component in a build that doesn't bundle CSS automatically, you can still import it:
-
-```javascript
-import '@tender-cash/agent-sdk-react/dist/style.css';
-```
-
 ## Usage
 
 Pass all payment parameters directly as props. The modal will automatically open when the component mounts with the required payment parameters.
 
 ```jsx
-import '@tender-cash/agent-sdk-react/dist/style.css';
 import { TenderAgentSdk, onFinishResponse } from '@tender-cash/agent-sdk-react';
 
 function PaymentComponent() {
@@ -81,7 +72,60 @@ The `TenderAgentSdk` component accepts the following props:
 | `paymentExpirySeconds` | `number`                                    | Payment expiry time in seconds. Optional, defaults to 30 minutes.           |
 | `theme`                | `"light"` \| `"dark"`                       | Theme for the payment modal. Optional, defaults to "light".                 |
 
+
 **Note:** When `referenceId` and `amount` are provided as props, the modal will automatically open on component mount.
+
+### Using Ref to Control Modal
+
+You can use a ref to programmatically control the modal from outside the widget:
+
+```jsx
+import { useRef } from 'react';
+import { TenderAgentSdk, TenderAgentRef } from '@tender-cash/agent-sdk-react';
+
+function PaymentComponent() {
+  const tenderRef = useRef<TenderAgentRef>(null);
+
+  const handleOpenPayment = () => {
+    tenderRef.current?.initiatePayment({
+      amount: 150.00,
+      referenceId: "unique-payment-reference-123",
+      paymentExpirySeconds: 1800
+    });
+  };
+
+  const handleCloseModal = () => {
+    // Close the modal programmatically from outside the widget
+    tenderRef.current?.closeModal();
+  };
+
+  return (
+    <>
+      <button onClick={handleOpenPayment}>Open Payment</button>
+      <button onClick={handleCloseModal}>Close Modal</button>
+      
+      <TenderAgentSdk
+        ref={tenderRef}
+        accessId="YOUR_ACCESS_ID"
+        fiatCurrency="USD"
+        env="test"
+        onEventResponse={(response) => console.log(response)}
+        amount={150.00}
+        referenceId="unique-payment-reference-123"
+        paymentExpirySeconds={1800}
+      />
+    </>
+  );
+}
+```
+
+#### Ref Methods (`TenderAgentRef`)
+
+| Method            | Description                                                                 |
+|-------------------|-----------------------------------------------------------------------------|
+| `initiatePayment` | Opens the modal and initiates a payment with the provided parameters.      |
+| `dismiss`         | Closes the modal.                                                           |
+| `closeModal`      | Closes the modal - can be called from outside the widget.                  |
 
 ## Callback Data (`onFinishResponse`)
 

@@ -199,7 +199,7 @@ interface ConfigContextType {
   paymentExpirySeconds?: number // optional expiry for payment countdown, defaults to 30 mins
   theme?: "light" | "dark"; // light or dark 
   onEventResponse?:(data:onFinishResponse) => void;
-  onClose?: () => void; // optional close handler for modal
+  closeModal?: () => void; // optional close handler for modal - when called, closes the modal
 }
 
 // Public widget props (used when embedding the component directly)
@@ -216,6 +216,7 @@ interface TenderAgentProps {
   amount?: number;
   paymentExpirySeconds?: number;
   theme?: "light" | "dark";
+  closeModal?: () => void; // Optional close handler for modal - when called, closes the modal
 }
 
 // Parameters passed when initiating a payment via ref

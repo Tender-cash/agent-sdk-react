@@ -25,15 +25,15 @@ const InfoScreen = ({
         address: string;
     };
 }) => {
-    const { onClose } = useConfig();
+    const { closeModal } = useConfig();
 
     return (
         <>
             <div className="ta:relative ta:w-full ta:h-1/3">
                 {/* Close Button */}
-                {onClose && (
+                {closeModal && (
                     <button
-                        onClick={onClose}
+                        onClick={closeModal}
                         className="ta:absolute ta:top-4 ta:right-4 ta:z-10 ta:flex ta:items-center ta:justify-center ta:w-10 ta:h-10 ta:rounded-full ta:bg-white ta:border ta:border-[#E6E6E6] hover:ta:bg-gray-50 ta:transition-colors ta:cursor-pointer ta:text-gray-600 hover:ta:text-gray-800 ta:shadow-sm"
                         aria-label="Close modal"
                         type="button"
