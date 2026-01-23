@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Copy, QrCode } from "lucide-react";
+import { Copy } from "lucide-react";
 import { useCopyToClipboard } from "usehooks-ts";
 // import QRCode from "react-qr-code";
 import { QRCode } from "react-qrcode-logo";
@@ -15,7 +15,6 @@ import {
     paymentDetailsProps,
 } from "../types";
 import { useConfig } from "../_context";
-import { sentenceCase } from "../lib/utils";
 
 const RenderPendingDetails = ({
     address,
@@ -35,7 +34,7 @@ const RenderPendingDetails = ({
 
     const initialSeconds =
         Number.isFinite(paymentExpirySeconds || 0) &&
-        (paymentExpirySeconds || 0) > 0
+            (paymentExpirySeconds || 0) > 0
             ? (paymentExpirySeconds as number)
             : 30 * 60; // default 30 minutes
 
@@ -180,116 +179,122 @@ const RenderFinishedDetails = ({
     amount,
     amountPaid,
     coin,
+    chain,
     status = "pending",
     balance,
     excess,
 }: paymentResponseProps) => {
-    const [_, copy] = useCopyToClipboard();
     const paymentType = paymentStatusMap[status];
     const iconTOShow = PAYMENT_ICONS[paymentType];
     const completed = status == PAYMENT_STATUS.COMPLETE;
     const isPartial = status == PAYMENT_STATUS.PARTIAL;
     const responseText = PAYMENT_RESPONSES[paymentType];
+    
+    // Get the appropriate title based on payment type
+    const getTitle = () => {
+        if (completed) return "Payment Completed";
+        if (isPartial) return "Partial Payment Received";
+        return "Overpayment Received";
+    };
+
+    // Get the appropriate description based on payment type
+    const getDescription = () => {
+        if (completed) return "Your payment has been successfully received and confirmed.";
+        if (isPartial) return "We've received a partial payment. Please complete the remaining amount.";
+        return "You have overpaid the requested amount. Please contact the merchant for a refund of the excess.";
+    };
+
     return (
         <>
-            <FormHeader
-                title={`${sentenceCase(paymentType)} Payment received`}
-                description="The customer made a partial or part payment of the requested amount."
-                icon={iconTOShow}
-            />
+            <div className="ta:relative ta:w-full">
+                <FormHeader
+                    title={getTitle()}
+                    description={getDescription()}
+                    icon={iconTOShow}
+                    className="ta:px-6 ta:pt-8"
+                    isInfo={true}
+                />
+            </div>
 
-            <FormBody>
-                {/* <div className="ta:border-t-1 ta:flex ta:flex-col ta:gap-2 ta:px-6"> */}
-                <div className="ta:w-max-full ta:flex ta:flex-row ta:justify-between ta:gap-4 ta:text-wrap ta:rounded-2xl ta:border ta:border-dashed ta:border-[#E6E6E6] ta:bg-[#FAFAFA] ta:p-4">
-                    <div className="ta:flex ta:w-full sm:ta:w-1/4 ta:flex-row ta:justify-center sm:ta:justify-start">
-                        <QrCode size={100} />
+            <FormBody className="ta:flex ta:flex-col ta:px-6 ta:gap-4">
+                {/* Payment Amount Display */}
+                <div className="ta:flex ta:flex-col ta:items-center ta:justify-center ta:py-4">
+                    <p className="ta:text-xs sm:ta:text-sm ta:text-secondary ta:mb-2">
+                        {completed ? "YOU PAID" : isPartial ? "AMOUNT RECEIVED" : "YOU OVERPAID"}
+                    </p>
+                    <div className="ta:flex ta:flex-row ta:gap-2 ta:items-baseline">
+                        <span className="ta:text-3xl sm:ta:text-5xl ta:font-bold ta:leading-tight">
+                            {amountPaid || amount}
+                        </span>
+                        <span className="ta:mt-auto ta:text-lg sm:ta:text-2xl ta:font-bold ta:text-secondary">
+                            {coin.toUpperCase()}
+                        </span>
                     </div>
-                    <div className="ta:my-auto ta:flex ta:w-full sm:ta:w-2/4 ta:flex-col ta:justify-start ta:text-pretty ta:gap-2">
-                        <h3 className="ta:text-sm sm:ta:text-base ta:text-secondary">
-                            {coin.toUpperCase()} Deposit Address
-                        </h3>
-                        <p className="ta:break-all ta:text-xs sm:ta:text-[13px] ta:underline ta:underline-offset-4">
-                            {address}
+                </div>
+
+                {/* Payment Details */}
+                <div className="ta:flex ta:flex-col ta:gap-3 ta:px-4 ta:py-4 ta:rounded-xl ta:bg-[#F9FAFB] ta:border ta:border-[#E6E6E6]">
+                    <div className="ta:flex ta:flex-row ta:items-center ta:justify-between">
+                        <span className="ta:text-sm ta:font-medium ta:text-secondary">Network</span>
+                        <span className="ta:text-sm ta:font-semibold">
+                            {chain.toUpperCase()}
+                        </span>
+                    </div>
+                    <div className="ta:flex ta:flex-row ta:items-center ta:justify-between">
+                        <span className="ta:text-sm ta:font-medium ta:text-secondary">Coin</span>
+                        <span className="ta:text-sm ta:font-semibold">
+                            {coin.toUpperCase()}
+                        </span>
+                    </div>
+                    <div className="ta:flex ta:flex-row ta:items-center ta:justify-between">
+                        <span className="ta:text-sm ta:font-medium ta:text-secondary">Original Amount</span>
+                        <span className="ta:text-sm ta:font-semibold">
+                            {amount} {coin.toUpperCase()}
+                        </span>
+                    </div>
+                    <div className="ta:flex ta:flex-row ta:items-center ta:justify-between">
+                        <span className="ta:text-sm ta:font-medium ta:text-secondary">Address</span>
+                        <span className="ta:text-sm ta:font-semibold ta:font-mono">
+                            {address.length > 16 
+                                ? `${address.slice(0, 8)}...${address.slice(-8)}` 
+                                : address}
+                        </span>
+                    </div>
+                    {!completed && (
+                        <>
+                            <div className="ta:w-full ta:h-px ta:bg-[#E6E6E6] ta:my-1" />
+                            <div className="ta:flex ta:flex-row ta:items-center ta:justify-between">
+                                <span className="ta:text-sm ta:font-medium">
+                                    {isPartial ? "Remaining Balance" : "Excess Amount"}
+                                </span>
+                                <span className="ta:text-base ta:font-bold ta:text-[#079455]">
+                                    {isPartial ? balance : excess} {coin.toUpperCase()}
+                                </span>
+                            </div>
+                        </>
+                    )}
+                </div>
+
+                {responseText && (
+                    <div className="ta:text-center ta:px-2">
+                        <p className="ta:text-sm ta:text-secondary">
+                            {responseText}
                         </p>
                     </div>
-                    <div className="ta:my-auto ta:flex ta:w-full sm:ta:w-1/4 ta:flex-row ta:justify-center sm:ta:justify-end">
-                        <Button
-                            className="ta:flex-row ta:rounded-2xl ta:border-[#D0D5DD] ta:bg-white ta:px-3 ta:py-2 ta:min-h-[44px] ta:w-full sm:ta:w-auto"
-                            variant="outline"
-                            onClick={() => copy(address)}
-                        >
-                            <span className="ta:flex ta:flex-row ta:items-center ta:justify-center ta:gap-1 ta:text-xs sm:ta:text-[14px] ta:font-medium ta:text-[#344054]">
-                                <Copy size={16} className="sm:ta:w-[18px] sm:ta:h-[18px]" />
-                                <span>Copy</span>
-                            </span>
-                        </Button>
-                    </div>
-                </div>
-                {completed ? (
-                    <div className="ta:flex ta:flex-col ta:items-center ta:justify-center ta:p-4">
-                        <p className="ta:text-xs sm:ta:text-sm">YOU PAID</p>
-                        <div className="ta:flex ta:flex-row ta:gap-2 ta:items-baseline">
-                            <span className="ta:text-2xl sm:ta:text-[38px] ta:font-bold ta:leading-tight">
-                                {amountPaid || amount}
-                            </span>
-                            <span className="ta:mb-0 sm:ta:mb-4 ta:mt-auto ta:text-base sm:ta:text-xl ta:font-bold ta:text-secondary">
-                                {coin.toUpperCase()}
-                            </span>
-                        </div>
-                    </div>
-                ) : (
-                    <div className="ta:flex ta:w-full ta:flex-col sm:ta:flex-row ta:items-center ta:justify-between ta:p-4 ta:gap-4 sm:ta:gap-0">
-                        <div className="ta:flex ta:w-full sm:ta:w-1/2 ta:flex-col ta:items-center ta:justify-center ta:p-4">
-                            <p className="ta:text-[10px] sm:ta:text-[12px] ta:text-secondary">
-                                YOU PAID
-                            </p>
-                            <div className="ta:flex ta:flex-row ta:gap-2 ta:items-baseline">
-                                <span className="ta:text-2xl sm:ta:text-[38px] ta:font-bold ta:leading-tight">
-                                    {amountPaid}
-                                </span>
-                                <span className="ta:mb-0 sm:ta:mb-4 ta:mt-auto ta:text-base sm:ta:text-xl ta:font-bold ta:text-secondary">
-                                    {coin.toUpperCase()}
-                                </span>
-                            </div>
-                        </div>
-                        <div className="ta:flex ta:w-full sm:ta:w-1/2 ta:flex-col ta:items-center ta:justify-center ta:p-4">
-                            <p className="ta:text-[10px] sm:ta:text-[12px] ta:text-secondary">
-                                {paymentType == "over" ? "EXCESS" : "REMAINING"}
-                            </p>
-                            <div className="ta:flex ta:flex-row ta:gap-2 ta:items-baseline">
-                                <span className="ta:text-2xl sm:ta:text-[38px] ta:font-bold ta:leading-tight">
-                                    {paymentType == "over" ? excess : balance}
-                                </span>
-                                <span className="ta:mb-0 sm:ta:mb-4 ta:mt-auto ta:text-base sm:ta:text-xl ta:font-bold ta:text-secondary">
-                                    {coin.toUpperCase()}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
                 )}
-                <div className="ta:my-4 ta:text-[14px] ta:text-secondary">
-                    <p className="ta:text-sm ta:text-secondary">
-                        {responseText}
-                    </p>
-                </div>
-                {/* </div> */}
             </FormBody>
 
-            <FormFooter>
-                {isPartial ? (
-                    <div className="ta:flex ta:w-full ta:flex-row ta:items-center ta:gap-4">
-                        <span>
-                            <Spinner size={16} />{" "}
-                        </span>
-                        <span className="ta:text-sm ta:text-secondary">
-                            Received partial payment, expecting {balance} {coin.toUpperCase()} more
-                        </span>
-                    </div>
-                ) : (
-                    <span className="ta:text-sm ta:text-secondary">
-                        You will be redirected shortly
+            <FormFooter className="ta:p-6">
+                <div className="ta:flex ta:w-full ta:flex-row ta:items-center ta:justify-center ta:gap-2">
+                    <span>
+                        <Spinner size={16} />
                     </span>
-                )}
+                    <span className="ta:text-sm ta:text-secondary">
+                        {isPartial 
+                            ? `Awaiting remaining ${balance} ${coin.toUpperCase()}`
+                            : "You will be redirected shortly"}
+                    </span>
+                </div>
             </FormFooter>
         </>
     );

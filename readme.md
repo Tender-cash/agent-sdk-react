@@ -86,6 +86,10 @@ import { TenderAgentSdk, TenderAgentRef } from '@tender-cash/agent-sdk-react';
 function PaymentComponent() {
   const tenderRef = useRef<TenderAgentRef>(null);
 
+  const handleEventResponse = (response) => {
+    console.log("response");
+  }
+
   const handleOpenPayment = () => {
     tenderRef.current?.initiatePayment({
       amount: 150.00,
@@ -109,7 +113,7 @@ function PaymentComponent() {
         accessId="YOUR_ACCESS_ID"
         fiatCurrency="USD"
         env="test"
-        onEventResponse={(response) => console.log(response)}
+        onEventResponse={handleEventResponse}
         amount={150.00}
         referenceId="unique-payment-reference-123"
         paymentExpirySeconds={1800}
@@ -124,8 +128,7 @@ function PaymentComponent() {
 | Method            | Description                                                                 |
 |-------------------|-----------------------------------------------------------------------------|
 | `initiatePayment` | Opens the modal and initiates a payment with the provided parameters.      |
-| `dismiss`         | Closes the modal.                                                           |
-| `closeModal`      | Closes the modal - can be called from outside the widget.                  |
+| `dismiss`         | Closes the modal.                        |
 
 ## Callback Data (`onFinishResponse`)
 

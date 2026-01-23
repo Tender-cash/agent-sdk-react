@@ -91,6 +91,7 @@ function App() {
             amount={parseFloat(amount) || 0}
             referenceId={Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)}
             paymentExpirySeconds={1800}
+            closeModal={() => setShowSdk(false)}
           />
         </>
       )}

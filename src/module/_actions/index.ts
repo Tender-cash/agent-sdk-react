@@ -2,7 +2,6 @@
 /*                             External Dependency                            */
 /* -------------------------------------------------------------------------- */
 import { useEffect, useMemo, useState } from "react";
-import { useCopyToClipboard } from "usehooks-ts";
 
 /* -------------------------------------------------------------------------- */
 /*                             Internal Dependency                            */
