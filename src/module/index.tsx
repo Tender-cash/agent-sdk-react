@@ -129,7 +129,7 @@ const TenderAgentSdk = forwardRef<TenderAgentRef, TenderAgentProps>(({
     const modalContent = (
         <div className={`tender-cash-agent-sdk-modal ${!isOpen ? "tender-cash-agent-sdk-modal-closing" : ""}`}>
             {/* Modal Backdrop */}
-            <div className="tender-cash-agent-sdk-modal-backdrop" onClick={handleCloseClick} />
+            <div className="tender-cash-agent-sdk-modal-backdrop" />
 
             {/* Modal Content Container */}
             <div className="tender-cash-agent-sdk-modal-content">

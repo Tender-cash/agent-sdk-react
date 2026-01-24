@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@tender-cash/agent-sdk-react':
-        specifier: 1.2.1
-        version: 1.2.1(@types/react-dom@18.3.7(@types/react@18.3.27))(@types/react@18.3.27)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(use-sync-external-store@1.6.0(react@18.3.1))
+        specifier: 1.2.2
+        version: 1.2.2(@types/react-dom@18.3.7(@types/react@18.3.27))(@types/react@18.3.27)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(use-sync-external-store@1.6.0(react@18.3.1))
       react:
         specifier: ^18.0.0
         version: 18.3.1
@@ -832,8 +832,8 @@ packages:
   '@tanstack/virtual-core@3.13.18':
     resolution: {integrity: sha512-Mx86Hqu1k39icq2Zusq+Ey2J6dDWTjDvEv43PJtRCoEYTLyfaPnxIQ6iy7YAOK0NV/qOEmZQ/uCufrppZxTgcg==}
 
-  '@tender-cash/agent-sdk-react@1.2.1':
-    resolution: {integrity: sha512-g0/sS6Ca0Z3VyWwL0WStr5apEXbzWUJVonoFTVfXhTISOz0qVOSUyYGtgMmA9KHBBrqJD87CT9Eb7eMuUgKn3g==}
+  '@tender-cash/agent-sdk-react@1.2.2':
+    resolution: {integrity: sha512-XECu6vhCm1PmXsEi5+yT+QRFiPHw4yUh8LV1iHhfUXecPS1W12398xrqre2bnX1FRaIHK4e7QUSZvbEsA8cVlg==}
     peerDependencies:
       react: '>= 16.8.0'
 
@@ -1377,6 +1377,15 @@ packages:
   loose-envify@1.4.0:
     resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
     hasBin: true
+
+  lottie-react@2.4.1:
+    resolution: {integrity: sha512-LQrH7jlkigIIv++wIyrOYFLHSKQpEY4zehPicL9bQsrt1rnoKRYCYgpCUe5maqylNtacy58/sQDZTkwMcTRxZw==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+
+  lottie-web@5.13.0:
+    resolution: {integrity: sha512-+gfBXl6sxXMPe8tKQm7qzLnUy5DUPJPKIyRHwtpCpyUEYjHYRJC/5gjUvdkuO2c3JllrPtHXH5UJJK8LRYl5yQ==}
 
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
@@ -2426,7 +2435,7 @@ snapshots:
 
   '@tanstack/virtual-core@3.13.18': {}
 
-  '@tender-cash/agent-sdk-react@1.2.1(@types/react-dom@18.3.7(@types/react@18.3.27))(@types/react@18.3.27)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(use-sync-external-store@1.6.0(react@18.3.1))':
+  '@tender-cash/agent-sdk-react@1.2.2(@types/react-dom@18.3.7(@types/react@18.3.27))(@types/react@18.3.27)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(use-sync-external-store@1.6.0(react@18.3.1))':
     dependencies:
       '@headlessui/react': 1.7.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@hookform/resolvers': 3.10.0(react-hook-form@7.71.1(react@18.3.1))
@@ -2447,6 +2456,7 @@ snapshots:
       dayjs: 1.11.19
       dompurify: 3.3.1
       framer-motion: 11.18.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      lottie-react: 2.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       lucide-react: 0.446.0(react@18.3.1)
       quill: 2.0.3
       react: 18.3.1
@@ -3034,6 +3044,14 @@ snapshots:
   loose-envify@1.4.0:
     dependencies:
       js-tokens: 4.0.0
+
+  lottie-react@2.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      lottie-web: 5.13.0
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+
+  lottie-web@5.13.0: {}
 
   lru-cache@5.1.1:
     dependencies:
