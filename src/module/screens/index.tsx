@@ -52,6 +52,7 @@ const TenderWidget = () => {
           amount={Number(paymentData?.coinAmount)}
           amountPaid={Number(paymentData?.amountPaid)}
           coin={String(paymentData?.coin)}
+          coinSymbol={selectedCoin?.label || String(paymentData?.coin)}
           chain={String(paymentData?.chain)}
           loading={paymentData.loading}
           cancelPayment={paymentData.cancelPayment}

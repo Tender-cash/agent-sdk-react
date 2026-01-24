@@ -34,3 +34,13 @@ declare module "*.css?inline" {
     const content: string;
     export default content;
 }
+
+declare module "*.json?url" {
+    const content: string;
+    export default content;
+}
+
+declare module "*.lottie?url" {
+    const content: string;
+    export default content;
+}

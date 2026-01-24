@@ -2,6 +2,7 @@
 /*                             Internal Dependency                            */
 /* -------------------------------------------------------------------------- */
 import { ReactNode } from "react";
+import Lottie from "lottie-react";
 import { FormFooterProps, FormHeaderProps } from "../types";
 import { cn } from "../lib/utils";
 import tenderIconLogo from "../../assets/icons/tender.svg";
@@ -20,6 +21,7 @@ const FormHeader = ({
     title,
     description,
     icon = tenderIconLogo,
+    lottieJson = null,
     className,
     isInfo = false
 }: FormHeaderProps) => (
@@ -30,11 +32,15 @@ const FormHeader = ({
     >
         {/* Circular green logo with white "7" */}
         <div className="ta:w-[100px] ta:h-[100px] ta:rounded-full ta:flex ta:items-center ta:justify-center ta:mb-4">
-            <img
-                src={icon}
-                className="ta:w-full ta:h-full ta:object-fit"
-                alt="icon"
-            />
+            {lottieJson ? (
+                <Lottie animationData={lottieJson} loop={true} autoplay={true} style={{ width: '100%', height: '100%' }} />
+            ) : (
+                <img
+                    src={icon}
+                    className="ta:w-full ta:h-full ta:object-fit"
+                    alt="icon"
+                />
+            )}
         </div>
         {/* "Holla," text */}
         {!isInfo && <p className="ta:text-[#667085] ta:text-base ta:mb-1">Holla,</p>}

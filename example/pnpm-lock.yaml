@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@tender-cash/agent-sdk-react':
-        specifier: 1.2.0
-        version: 1.2.0(@types/react-dom@18.3.7(@types/react@18.3.27))(@types/react@18.3.27)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(use-sync-external-store@1.6.0(react@18.3.1))
+        specifier: 1.2.1
+        version: 1.2.1(@types/react-dom@18.3.7(@types/react@18.3.27))(@types/react@18.3.27)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(use-sync-external-store@1.6.0(react@18.3.1))
       react:
         specifier: ^18.0.0
         version: 18.3.1
@@ -832,8 +832,8 @@ packages:
   '@tanstack/virtual-core@3.13.18':
     resolution: {integrity: sha512-Mx86Hqu1k39icq2Zusq+Ey2J6dDWTjDvEv43PJtRCoEYTLyfaPnxIQ6iy7YAOK0NV/qOEmZQ/uCufrppZxTgcg==}
 
-  '@tender-cash/agent-sdk-react@1.2.0':
-    resolution: {integrity: sha512-OjpECUgpUjPHWWGmA0xPr6n3bklu3OKZTeVF7817tAc9lewG29OWNLOOVJyubOD+hRXC7XkgbQGBorWVi5F7Ow==}
+  '@tender-cash/agent-sdk-react@1.2.1':
+    resolution: {integrity: sha512-g0/sS6Ca0Z3VyWwL0WStr5apEXbzWUJVonoFTVfXhTISOz0qVOSUyYGtgMmA9KHBBrqJD87CT9Eb7eMuUgKn3g==}
     peerDependencies:
       react: '>= 16.8.0'
 
@@ -2426,7 +2426,7 @@ snapshots:
 
   '@tanstack/virtual-core@3.13.18': {}
 
-  '@tender-cash/agent-sdk-react@1.2.0(@types/react-dom@18.3.7(@types/react@18.3.27))(@types/react@18.3.27)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(use-sync-external-store@1.6.0(react@18.3.1))':
+  '@tender-cash/agent-sdk-react@1.2.1(@types/react-dom@18.3.7(@types/react@18.3.27))(@types/react@18.3.27)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(use-sync-external-store@1.6.0(react@18.3.1))':
     dependencies:
       '@headlessui/react': 1.7.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@hookform/resolvers': 3.10.0(react-hook-form@7.71.1(react@18.3.1))

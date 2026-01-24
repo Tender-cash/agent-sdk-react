@@ -18,7 +18,7 @@ const App = () => {
   const OnFinishedResponse = (data: onFinishResponse) => {
     console.log("response--->", data);
   };
-
+// https://unpkg.com/@tender-cash/agent-sdk-react@latest/dist/tender-cash-agent-sdk-react.es.js
   return (
     <>
       <TenderAgentSdk

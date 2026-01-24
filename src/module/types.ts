@@ -62,6 +62,7 @@ interface FormHeaderProps {
   title: string;
   description: string;
   icon?: string;
+  lottieJson?: any;
   className?: string;
   isInfo?: boolean;
 }
