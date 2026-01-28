@@ -14,7 +14,11 @@ import TenderWidget from "./screens";
 import { ConfigContextType, TenderAgentProps, TenderAgentRef, StartPaymentParams } from "./types";
 import { findElementInShadowDOM, isInShadowDOM } from "../lib/shadow-dom-utils";
 
-const TenderAgentSdk = forwardRef<TenderAgentRef, TenderAgentProps>(({
+type InternalTenderAgentProps = TenderAgentProps & {
+    __tenderDestroyHost?: () => void;
+};
+
+const TenderAgentSdk = forwardRef<TenderAgentRef, InternalTenderAgentProps>(({
     accessId,
     fiatCurrency,
     env,
@@ -25,6 +29,7 @@ const TenderAgentSdk = forwardRef<TenderAgentRef, TenderAgentProps>(({
     paymentExpirySeconds: directPaymentExpirySeconds,
     theme: directTheme = "light",
     closeModal: closeModalProp,
+    __tenderDestroyHost,
 }, ref) => {
     const [isOpen, setIsOpen] = useState(false);
     const [shouldRender, setShouldRender] = useState(false);
@@ -33,21 +38,30 @@ const TenderAgentSdk = forwardRef<TenderAgentRef, TenderAgentProps>(({
     // Check if using direct props pattern (without ref)
     const isDirectMode = !!(directReferenceId && directAmount);
 
+    const removeModalContainer = useCallback(() => {
+        const modalElement = findElementInShadowDOM("tender-cash-agent-sdk");
+        if (modalElement) {
+            // Always remove the modal container so the DOM and
+            // all attached events are fully cleaned up between runs.
+            modalElement.remove();
+        }
+    }, []);
+
     const handleClose = useCallback(() => {
         setIsOpen(false);
         // Delay removal to allow for exit animation
         setTimeout(() => {
             setShouldRender(false);
-            const modalElement = findElementInShadowDOM("tender-cash-agent-sdk");
-            if (modalElement) {
-                modalElement.remove();
-            }
+            removeModalContainer();
         }, 200);
         // Call the closeModal prop if provided
         if (closeModalProp) {
             closeModalProp();
         }
-    }, [closeModalProp]);
+        if (__tenderDestroyHost) {
+            __tenderDestroyHost();
+        }
+    }, [closeModalProp, removeModalContainer, __tenderDestroyHost]);
 
     const initiatePayment = useCallback(({ amount, referenceId, paymentExpirySeconds }: StartPaymentParams) => {
         setConfig({
@@ -64,13 +78,21 @@ const TenderAgentSdk = forwardRef<TenderAgentRef, TenderAgentProps>(({
         });
 
         setShouldRender(true);
-        // Ensure modal container exists (check both document and shadow DOM)
+        // Ensure modal container exists.
+        // Prefer creating it inside the SDK shadow root when available,
+        // otherwise fall back to the regular DOM (for non-shadow usage).
         const existingContainer = findElementInShadowDOM("tender-cash-agent-sdk");
         if (!existingContainer) {
-            // If not found in shadow DOM, create in document body (fallback for non-shadow usage)
-            const container = document.createElement('div');
-            container.id = "tender-cash-agent-sdk";
-            document.body.appendChild(container);
+            const shadowHost = document.querySelector("[data-tender-sdk-shadow-host]") as HTMLElement | null;
+            if (shadowHost && shadowHost.shadowRoot) {
+                const container = document.createElement("div");
+                container.id = "tender-cash-agent-sdk";
+                shadowHost.shadowRoot.appendChild(container);
+            } else {
+                const container = document.createElement("div");
+                container.id = "tender-cash-agent-sdk";
+                document.body.appendChild(container);
+            }
         }
         // Small delay to ensure DOM is ready before showing
         setTimeout(() => {
@@ -107,14 +129,12 @@ const TenderAgentSdk = forwardRef<TenderAgentRef, TenderAgentProps>(({
     }), [initiatePayment, dismiss, closeModal]);
 
     useEffect(() => {
-        // Cleanup on unmount
+        // Cleanup on unmount – remove any existing modal container
+        // so tests and repeated mounts always start from a clean DOM.
         return () => {
-            const modalElement = findElementInShadowDOM("tender-cash-agent-sdk");
-            if (modalElement) {
-                modalElement.remove();
-            }
+            removeModalContainer();
         };
-    }, []);
+    }, [removeModalContainer]);
 
     if (!shouldRender || !config) return null;
 

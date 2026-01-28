@@ -1,6 +1,4 @@
-import { X } from "lucide-react";
 import completedIcon from "@/assets/icons/completed.svg";
-import tenderIcon from "@/assets/icons/tender.svg";
 import errorIcon from "@/assets/icons/error.svg";
 import { FormHeader, FormFooter, FormBody } from "../_components/layout";
 import { Spinner } from "../_components";
@@ -30,17 +28,6 @@ const InfoScreen = ({
     return (
         <>
             <div className="ta:relative ta:w-full ta:h-1/3">
-                {/* Close Button */}
-                {closeModal && (
-                    <button
-                        onClick={closeModal}
-                        className="ta:absolute ta:top-4 ta:right-4 ta:z-10 ta:flex ta:items-center ta:justify-center ta:w-10 ta:h-10 ta:rounded-full ta:bg-white ta:border ta:border-[#E6E6E6] hover:ta:bg-gray-50 ta:transition-colors ta:cursor-pointer ta:text-gray-600 hover:ta:text-gray-800 ta:shadow-sm"
-                        aria-label="Close modal"
-                        type="button"
-                    >
-                        <X size={18} />
-                    </button>
-                )}
                 <FormHeader
                     title={title}
                     description={type === "info" ? message : ""}

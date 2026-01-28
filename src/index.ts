@@ -13,6 +13,17 @@ const TenderAgentSdk = forwardRef<TenderAgentRef, TenderAgentProps>((props, ref)
     const hostRef = useRef<HTMLDivElement | null>(null);
     const rootRef = useRef<Root | null>(null);
 
+    const destroyHost = () => {
+        if (rootRef.current) {
+            rootRef.current.unmount();
+            rootRef.current = null;
+        }
+        if (hostRef.current && hostRef.current.parentNode) {
+            hostRef.current.parentNode.removeChild(hostRef.current);
+        }
+        hostRef.current = null;
+    };
+
     useEffect(() => {
         // 1. Create host element
         const host = document.createElement('div');
@@ -38,28 +49,31 @@ const TenderAgentSdk = forwardRef<TenderAgentRef, TenderAgentProps>((props, ref)
         // 6. Render React component with props directly into mount point
         const root = createRoot(mountPoint);
         rootRef.current = root;
-        root.render(React.createElement(TenderAgentSdkWidget, props));
+        root.render(
+            React.createElement(TenderAgentSdkWidget as any, {
+                ...props,
+                __tenderDestroyHost: destroyHost,
+            })
+        );
 
         // 7. Append host to body
         document.body.appendChild(host);
 
         // Cleanup on unmount
         return () => {
-            if (rootRef.current) {
-                rootRef.current.unmount();
-                rootRef.current = null;
-            }
-            if (hostRef.current && hostRef.current.parentNode) {
-                hostRef.current.parentNode.removeChild(hostRef.current);
-            }
-            hostRef.current = null;
+            destroyHost();
         };
     }, []); // Only run once on mount
 
     // Update component when props change
     useEffect(() => {
         if (rootRef.current) {
-            rootRef.current.render(React.createElement(TenderAgentSdkWidget, props));
+            rootRef.current.render(
+                React.createElement(TenderAgentSdkWidget as any, {
+                    ...props,
+                    __tenderDestroyHost: destroyHost,
+                })
+            );
         }
     }, [props]);
 
